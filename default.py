@@ -5,7 +5,7 @@ import xbmcgui
 import xbmcplugin
 import xbmcaddon
 
-from resources.lib.router import Router
+from resources.lib.router import GameDirectoryPlugin
 
 # ===== Debug =====
 try:
@@ -24,7 +24,7 @@ HANDLE = int(sys.argv[1])
 BASE_URL = sys.argv[0]
 ARGS = urllib.parse.parse_qs(sys.argv[2][1:])
 
-router = Router(HANDLE, BASE_URL, ARGS, ADDON)
+router = GameDirectoryPlugin(HANDLE, BASE_URL, ARGS, ADDON)
 
 if __name__ == "__main__":
     router.route()

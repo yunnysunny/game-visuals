@@ -1,6 +1,7 @@
 import os
 # import sys
 import xml.etree.ElementTree as ET
+import xbmc
 import xbmcgui
 import xbmcplugin
 
@@ -71,5 +72,8 @@ class GameDirectoryPlugin:
                 xbmcplugin.addDirectoryItem(
                     handle=self.handle, url=rom_path, listitem=li, isFolder=False
                 )
-
+        # ✅ 告诉 Kodi 这是“电影”类内容
+        xbmcplugin.setContent(self.handle, 'movies')
+        # ✅ 强制使用详细视图
+        xbmc.executebuiltin('Container.SetViewMode(500)')
         xbmcplugin.endOfDirectory(self.handle)
