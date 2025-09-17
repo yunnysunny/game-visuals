@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="com.whyun.game-poster"
+       name="Game Poster"
+       version="0.1.0"
+       provider-name="YourName">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+    </requires>
+
+    <extension point="xbmc.python.plugin" library="default.py">
+        <provides>video</provides>
+    </extension>
+
+    <extension point="xbmc.addon.metadata">
+        <summary>示例 Kodi 视频插件</summary>
+        <description>最小示例：列出两个条目并能播放 URL</description>
+        <platform>all</platform>
+        <language>zh_CN</language>
+    </extension>
+
+    <assets>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
+    </assets>
+</addon>

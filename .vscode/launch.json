@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach to Kodi Plugin",
+      "type": "python",
+      "request": "attach",
+      "connect": {
+        "host": "127.0.0.1",   // 如果 Kodi 在别的设备，改成它的 IP
+        "port": 5678
+      },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}",       // 本机插件源码目录
+          "remoteRoot": "/storage/.kodi/addons/plugin.video.example"  // Kodi 里的插件路径
+        }
+      ]
+    }
+  ]
+}
