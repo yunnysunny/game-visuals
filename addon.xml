@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="com.whyun.game-poster"
-       name="Game Poster"
-       version="0.1.0"
+       name="Game Visuals"
+       version="0.1.1"
        provider-name="whyun">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>

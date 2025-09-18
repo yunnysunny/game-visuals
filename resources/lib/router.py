@@ -11,10 +11,13 @@ class GameDirectoryPlugin:
         self.base_url = base_url
         self.args = args
         self.addon = addon
+    def log(self, msg, level=xbmc.LOGINFO):
+        xbmc.log(f"[GamePoster] {msg}", level)
 
     def route(self):
         # 如果有指定目录，显示该目录下的游戏
         directory = self.args.get("dir", [None])[0]
+        self.log(f"Routing to directory: {directory}", level=xbmc.LOGINFO)
         if directory:
             self.list_games_in_directory(directory)
         else:
@@ -36,6 +39,7 @@ class GameDirectoryPlugin:
 
     def list_games_in_directory(self, directory):
         xml_file = os.path.join(directory, "game.xml")
+        self.log(f"xml file in directory: {xml_file}", level=xbmc.LOGINFO)
         game_info = {}
 
         if os.path.exists(xml_file):
@@ -61,6 +65,7 @@ class GameDirectoryPlugin:
         for file in os.listdir(directory):
             if file.endswith((".nes", ".zip", ".sfc")):
                 rom_path = os.path.join(directory, file)
+                self.log(f"Found ROM file: {rom_path}", level=xbmc.LOGINFO)
                 meta = game_info.get(file, {"title": file, "plot": "", "thumb": ""})
 
                 li = xbmcgui.ListItem(label=meta["title"])

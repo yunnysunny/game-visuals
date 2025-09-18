@@ -1,11 +1,15 @@
 # default.py
 import sys
 import urllib.parse
+import xbmc
 import xbmcgui
 import xbmcplugin
 import xbmcaddon
 
 from resources.lib.router import GameDirectoryPlugin
+
+# 👇 绝对要出现在日志里的测试语句（放在最前面）
+xbmc.log("[GamePoster] 插件启动！正在加载 default.py", level=xbmc.LOGINFO)
 
 # ===== Debug =====
 try:
