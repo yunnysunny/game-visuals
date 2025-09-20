@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="com.whyun.game-poster"
+<addon id="plugin.video.game-visuals"
        name="Game Visuals"
        version="0.1.1"
        provider-name="whyun">

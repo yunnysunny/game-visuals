@@ -1,0 +1,28 @@
+msgid ""
+msgstr ""
+"Language: zh_cn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "#30300"
+msgid "Tips"
+msgstr "提示"
+
+msgctxt "#30301"
+msgid "Please set ROM directory in settings firstly"
+msgstr "请先在插件设置中添加 ROM 目录"
+
+msgctxt "#30302"
+msgid "Parse error"
+msgstr "解析错误"
+
+msgctxt "#30303"
+msgid "Select ROM directory"
+msgstr "选择 ROM 目录"
+
+msgctxt "#30304"
+msgid "ROM settings"
+msgstr "ROM 设置"
+

@@ -47,7 +47,9 @@ class GameDirectoryPlugin:
         rom_dirs_str = self.addon.getSetting("rom_dirs")
         rom_dirs = [d.strip() for d in rom_dirs_str.split("|") if d.strip()]
         if not rom_dirs:
-            xbmcgui.Dialog().ok("提示", "请先在插件设置中添加 ROM 目录")
+            tip = self.addon.getLocalizedString(30300)
+            tip_msg = self.addon.getLocalizedString(30301)
+            xbmcgui.Dialog().ok(tip, tip_msg)
             xbmcplugin.endOfDirectory(self.handle, succeeded=False)
             return
 
@@ -92,7 +94,8 @@ class GameDirectoryPlugin:
                 self.log(f"Found ROM list: {game_info}", level=xbmc.LOGINFO)
             except Exception as e:
                 self.log(f"parse xml file error: {e}", level=xbmc.LOGWARNING)
-                xbmcgui.Dialog().notification("解析错误", str(e))
+                parse_error = self.addon.getLocalizedString(30302)
+                xbmcgui.Dialog().notification(parse_error, str(e))
         else:
             # 渲染子目录
             for subdir in os.listdir(directory):
