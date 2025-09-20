@@ -13,8 +13,10 @@
     </extension>
 
     <extension point="xbmc.addon.metadata">
-        <summary>Rom 详情</summary>
-        <description>显示游戏rom目录中各个rom文件的详情</description>
+        <summary lang="zh_CN">游戏画廊</summary>
+        <summary lang="en_US">Game Visuals</summary>
+        <description lang="zh_CN">显示游戏rom目录中各个rom文件的详情</description>
+        <description lang="en_US">Display the details of each rom file in the game rom directory</description>
         <platform>all</platform>
         <assets>
             <icon>icon.png</icon>

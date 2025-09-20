@@ -26,7 +26,7 @@ except Exception as e:
 ADDON = xbmcaddon.Addon()
 HANDLE = int(sys.argv[1])
 BASE_URL = sys.argv[0]
-ARGS = urllib.parse.parse_qs(sys.argv[2][1:])
+ARGS = urllib.parse.parse_qs(sys.argv[2][1:]) if len(sys.argv) > 2 else {}
 
 router = GameDirectoryPlugin(HANDLE, BASE_URL, ARGS, ADDON)
 

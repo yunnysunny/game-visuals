@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+    <category label="ROM设置">
+        <setting id="rom_dirs"
+                 type="folder"
+                 label="选择 ROM 目录（可多选）"
+                 default=""
+                 multiple="true"
+                 visible="true"
+                 />
+    </category>
+</settings>
