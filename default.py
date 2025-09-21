@@ -6,6 +6,7 @@ import xbmcgui
 import xbmcplugin
 import xbmcaddon
 
+
 from resources.lib.router import GameDirectoryPlugin
 
 # 👇 绝对要出现在日志里的测试语句（放在最前面）
@@ -39,4 +40,21 @@ xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_SIZE)    # 按大小
 router = GameDirectoryPlugin(HANDLE, BASE_URL, ARGS, ADDON)
 
 if __name__ == "__main__":
+
     router.route()
+    # rom_dirs_str = ADDON.getSetting("rom_dirs")
+    # rom_dirs = [d.strip() for d in rom_dirs_str.split("|") if d.strip()]
+    # if not rom_dirs:
+    #     tip = ADDON.getLocalizedString(30300)
+    #     tip_msg = ADDON.getLocalizedString(30301)
+    #     xbmcgui.Dialog().ok(tip, tip_msg)
+    #     exit()
+    # w = MyWindow(
+    #     "mywindow.xml",                  # UI 布局文件
+    #     ADDON.getAddonInfo("path"),      # 插件路径
+    #     "default",                       # 皮肤文件夹
+    #     "720p",                           # 分辨率文件夹
+    #     dir="|".join(rom_dirs)
+    # )
+    # w.show()
+    # del w
