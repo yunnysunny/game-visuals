@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 
 from .utils import log
 from .rom_extensions import ROM_EXTENSIONS
-
+# see https://alwinesch.github.io/test-xbmc/Leia/kodi-base/d9/d2e/group__kodi__key__action__ids.html
 ACTION_PREVIOUS_MENU = 10
 ACTION_NAV_BACK = 92  # 也是返回键（遥控器/ESC）
 ACTION_MOVE_UP = 3
