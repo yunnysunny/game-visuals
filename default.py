@@ -11,6 +11,8 @@ from resources.lib.router import GameDirectoryPlugin
 # 👇 绝对要出现在日志里的测试语句（放在最前面）
 xbmc.log("[GamePoster] 插件启动！正在加载 default.py", level=xbmc.LOGINFO)
 
+
+
 # ===== Debug =====
 try:
     import debugpy
@@ -27,6 +29,12 @@ ADDON = xbmcaddon.Addon()
 HANDLE = int(sys.argv[1])
 BASE_URL = sys.argv[0]
 ARGS = urllib.parse.parse_qs(sys.argv[2][1:]) if len(sys.argv) > 2 else {}
+
+# 设置支持的排序方式
+xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_TITLE)   # 按标题
+xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_DATE)    # 按日期
+xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_SIZE)    # 按大小
+# xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_GENRE)   # 按类别
 
 router = GameDirectoryPlugin(HANDLE, BASE_URL, ARGS, ADDON)
 

@@ -115,7 +115,12 @@ class GameDirectoryPlugin:
                 info_tag = li.getVideoInfoTag()
                 info_tag.setTitle(meta["title"])
                 info_tag.setPlot(meta["plot"])
-                info_tag.setTrailer(meta["trailer"])
+                if meta["trailer"] and os.path.exists(meta["trailer"]):
+                    li.setProperty("IsPlayable", "true")
+                    info_tag.setTrailer(meta["trailer"])
+                    self.log(f"--- Trailer found for {meta['title']} {meta['trailer']} ---", level=xbmc.LOGINFO)
+                else:
+                    self.log(f"No trailer found for {meta['title']} {meta['trailer']}", level=xbmc.LOGINFO)
                 if meta["thumb"] and os.path.exists(meta["thumb"]):
                     li.setArt({
                         "thumb": meta["thumb"],
