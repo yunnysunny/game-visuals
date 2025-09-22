@@ -7,10 +7,12 @@
         <import addon="xbmc.python" version="3.0.0"/>
     </requires>
 
-    <extension point="xbmc.python.pluginsource"
-               library="default.py">
+    <!-- 作为视频插件入口 -->
+    <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>
     </extension>
+    <extension point="xbmc.python.script" library="script.py" />
+
 
     <extension point="xbmc.addon.metadata">
         <summary lang="zh_CN">游戏画廊</summary>
