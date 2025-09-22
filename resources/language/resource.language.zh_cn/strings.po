@@ -26,3 +26,11 @@ msgctxt "#30304"
 msgid "ROM settings"
 msgstr "ROM 设置"
 
+msgctxt "#30305"
+msgid "Use two-column view"
+msgstr "使用双栏视图"
+
+msgctxt "#30306"
+msgid "Skip media folders"
+msgstr "跳过媒体文件夹: images video"
+

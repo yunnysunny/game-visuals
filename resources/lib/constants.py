@@ -51,6 +51,8 @@ PLATFORM_INFO = {
     # 可以继续添加其他扩展名的说明
 }
 
+MEDIA_FOLDERS = ["images", "videos"]
+
 def is_rom_file(filename):
     """检查文件是否是ROM文件"""
     return any(filename.lower().endswith(ext) for ext in ROM_EXTENSIONS)

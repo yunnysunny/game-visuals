@@ -1,11 +1,13 @@
-from ntpath import isfile
 import xbmc
 import xbmcgui
 import os
 import xml.etree.ElementTree as ET
 
-from .utils import log
-from .rom_extensions import ROM_EXTENSIONS
+from .utils import get_game_info, log
+from .constants import ROM_EXTENSIONS, MEDIA_FOLDERS
+import xbmcaddon
+
+addon = xbmcaddon.Addon()  # 默认获取当前插件
 # see https://alwinesch.github.io/test-xbmc/Leia/kodi-base/d9/d2e/group__kodi__key__action__ids.html
 ACTION_PREVIOUS_MENU = 10
 ACTION_NAV_BACK = 92  # 也是返回键（遥控器/ESC）
@@ -76,69 +78,74 @@ class MyWindow(xbmcgui.WindowXML):
         # ✅ 其他事件交给父类处理
         log(f"use super onAction {action_id}")
         super().onAction(action)
-    def getGameInfo(self):
-        directory = self.dir
-        xml_file = os.path.join(directory, "gamelist.xml")
-        log(f"xml file in directory: {xml_file}", level=xbmc.LOGINFO)
-        game_info = {}
+    # def getGameInfo(self):
+    #     directory = self.dir
+    #     xml_file = os.path.join(directory, "gamelist.xml")
+    #     log(f"xml file in directory: {xml_file}", level=xbmc.LOGINFO)
+    #     game_info = {}
 
-        if os.path.exists(xml_file):
-            try:
-                tree = ET.parse(xml_file)
-                root = tree.getroot()
-                for g in root.findall("game"):
-                    fname = g.findtext("path")
-                    log(f"Found ROM config: {fname}", level=xbmc.LOGINFO)
-                    if not fname:  # 如果没有 path 属性，跳过这条记录
-                        continue
-                    title = g.findtext("name", fname)
-                    plot = g.findtext("desc", "")
-                    thumb = g.findtext("image", "")
-                    trailer = g.findtext("video", "")
-                    if thumb:
-                        thumb = os.path.normpath(os.path.join(directory, thumb))
-                        if not os.path.exists(thumb):
-                            thumb = None
-                    if trailer:
-                        trailer = os.path.normpath(os.path.join(directory, trailer))
-                        if not os.path.exists(trailer):
-                            trailer = None
-                    if fname.startswith("./"):
-                        fname = fname[2:]  # 去掉前两个字符
+    #     if os.path.exists(xml_file):
+    #         try:
+    #             tree = ET.parse(xml_file)
+    #             root = tree.getroot()
+    #             for g in root.findall("game"):
+    #                 fname = g.findtext("path")
+    #                 log(f"Found ROM config: {fname}", level=xbmc.LOGINFO)
+    #                 if not fname:  # 如果没有 path 属性，跳过这条记录
+    #                     continue
+    #                 title = g.findtext("name", fname)
+    #                 plot = g.findtext("desc", "")
+    #                 thumb = g.findtext("image", "")
+    #                 trailer = g.findtext("video", "")
+    #                 if thumb:
+    #                     thumb = os.path.normpath(os.path.join(directory, thumb))
+    #                     if not os.path.exists(thumb):
+    #                         thumb = None
+    #                 if trailer:
+    #                     trailer = os.path.normpath(os.path.join(directory, trailer))
+    #                     if not os.path.exists(trailer):
+    #                         trailer = None
+    #                 if fname.startswith("./"):
+    #                     fname = fname[2:]  # 去掉前两个字符
                     
-                    rom_path = os.path.normpath(os.path.join(directory, fname))
-                    if not os.path.exists(rom_path):
-                        continue
-                    game_info[fname] = {
-                        "path": rom_path,
-                        "title": title,
-                        "plot": plot,
-                        "thumb": thumb,
-                        "trailer": trailer
-                    }
-                log(f"Found ROM list: {game_info}", level=xbmc.LOGINFO)
-            except Exception as e:
-                log(f"parse xml file error: {e}", level=xbmc.LOGWARNING)
-                parse_error = self.addon.getLocalizedString(30302)
-                xbmcgui.Dialog().notification(parse_error, str(e))
-        return game_info
+    #                 rom_path = os.path.normpath(os.path.join(directory, fname))
+    #                 if not os.path.exists(rom_path):
+    #                     continue
+    #                 game_info[fname] = {
+    #                     "path": rom_path,
+    #                     "title": title,
+    #                     "plot": plot,
+    #                     "thumb": thumb,
+    #                     "trailer": trailer
+    #                 }
+    #             log(f"Found ROM list: {game_info}", level=xbmc.LOGINFO)
+    #         except Exception as e:
+    #             log(f"parse xml file error: {e}", level=xbmc.LOGWARNING)
+    #             parse_error = self.addon.getLocalizedString(30302)
+    #             xbmcgui.Dialog().notification(parse_error, str(e))
+    #     return game_info
     def refresh_list(self, record_history=True):
         """刷新当前目录内容"""
         log(f"MyWindow refresh_list called with dir: {self.dir}")
         self.list_control.reset()
-        game_info = self.getGameInfo()
+        game_info = get_game_info(self.dir)
         # 修复：dir 是单个路径字符串，不需要 split
         if not self.dir:
             log("No directory provided to refresh_list")
             return
+        skip_media_folders = addon.getSettingBool("skip_media_folders")
         try:
             files_list = os.listdir(self.dir)
             log(f"Found {len(files_list)} items in directory: {files_list[:5]}...")  # 只显示前5个
             
             for item in files_list:
                 full_path = os.path.join(self.dir, item)
-                if os.path.isdir(full_path) and len(os.listdir(full_path)) == 0:
-                    continue
+                if os.path.isdir(full_path):
+                    if len(os.listdir(full_path)) == 0:
+                        continue
+                    if skip_media_folders and item.lower() in MEDIA_FOLDERS:
+                        log(f"Skipping media folder: {item}", level=xbmc.LOGINFO)
+                        continue
                 if os.path.isfile(full_path) and not item.endswith(ROM_EXTENSIONS):
                     continue
                 properties = game_info.get(item, {})

@@ -7,10 +7,17 @@
                  default=""
                  visible="true"
                  />
-        <!-- <setting id="manage_rom_dirs"
-         type="action"
-         label="30303"
-         action="RunScript($CWD/resources/lib/manage_roms.py)"
-        /> -->
+        <setting id="use_two_column_view"
+                 type="bool"
+                 label="30305"
+                 default="false"
+                 visible="true"
+                 />
+        <setting id="skip_media_folders"
+                 type="bool"
+                 label="30306"
+                 default="true"
+                 visible="true"
+                 />
     </category>
 </settings>
