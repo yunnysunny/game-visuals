@@ -27,8 +27,8 @@ msgid "ROM settings"
 msgstr "ROM settings"
 
 msgctxt "#30305"
-msgid "Use two-column view"
-msgstr "Use two-column view"
+msgid "Use custom view (beta)"
+msgstr "Use custom view (beta)"
 
 msgctxt "#30306"
 msgid "Skip media folders"
