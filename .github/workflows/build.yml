@@ -35,8 +35,7 @@ jobs:
       - name: Create zip
         run: |
           mkdir dist
-          zip -r "dist/${{ steps.parse.outputs.id }}-${{ steps.parse.outputs.version }}.zip" \
-          "${{ steps.parse.outputs.id }}" \
+          zip -r "dist/${{ steps.parse.outputs.id }}-${{ steps.parse.outputs.version }}.zip" . \
           -x "*.git*" -x "docs/*" -x ".vscode/*" -x "*.github/*" -x "dist/*"
 
       - name: Upload artifact
