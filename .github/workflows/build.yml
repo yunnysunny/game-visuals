@@ -15,24 +15,34 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set variables
-        id: vars
+        id: parse
         run: |
-          ADDON_ID=$(basename $(find . -maxdepth 1 -type d -name "plugin.*" -o -name "script.*"))
-          echo "ADDON_ID=$ADDON_ID" >> $GITHUB_ENV
-          VERSION=$(grep -oP 'version="\K[^"]+' $ADDON_ID/addon.xml)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Addon ID: $ADDON_ID"
-          echo "Version: $VERSION"
+          python3 - << 'EOF'
+          import xml.etree.ElementTree as ET
+
+          tree = ET.parse('addon.xml')
+          root = tree.getroot()
+
+          addon_id = root.attrib.get('id')
+          addon_name = root.attrib.get('name')
+          addon_version = root.attrib.get('version')
+
+          print(f"::set-output name=id::{addon_id}")
+          print(f"::set-output name=name::{addon_name}")
+          print(f"::set-output name=version::{addon_version}")
+          EOF
 
       - name: Create zip
         run: |
           mkdir dist
-          zip -r "dist/${ADDON_ID}-${VERSION}.zip" "$ADDON_ID" -x "*.git*" -x "docs/*" -x ".vscode/*" -x "*.github/*" -x "dist/*"
+          zip -r "dist/${{ steps.parse.outputs.id }}-${{ steps.parse.outputs.version }}.zip" \
+          "${{ steps.parse.outputs.id }}" \
+          -x "*.git*" -x "docs/*" -x ".vscode/*" -x "*.github/*" -x "dist/*"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.ADDON_ID }}-${{ env.VERSION }}
+          name: ${{ steps.parse.outputs.id }}-${{ steps.parse.outputs.version }}
           path: dist/*.zip
 
       - name: Upload release
