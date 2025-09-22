@@ -1,7 +1,7 @@
 ## v0.2.0
-## Add
+### Add
 1. Add option to skip media folders (images, videos) when browsing ROM directories.
-2. Set shift view mode as default.
+2. Set `shift` view type as default.
 
 ## v0.1.0
 Project init.
