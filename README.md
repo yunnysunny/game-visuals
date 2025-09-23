@@ -37,3 +37,7 @@ If you find this add-on useful and would like to support its development, please
 
 If you encounter any issues or have suggestions for improvement, please feel free to open an issue on the [GitHub repository](https://github.com/yunnysunny/game-visuals).
 
+## TODO
+- [ ] Add support for multiple root path for roms.
+- [ ] Improve compatibility with zipped ROMs.
+
