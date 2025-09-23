@@ -40,7 +40,7 @@ jobs:
           mkdir -p dist ${{ steps.parse.outputs.id }}
           rsync -av --exclude='.git/' --exclude='docs/' \
             --exclude='.vscode/' --exclude='.github/' --exclude='dist/' \
-            --exclude='${{ steps.parse.outputs.id }}/'
+            --exclude='${{ steps.parse.outputs.id }}/' \
             ./  ${{ steps.parse.outputs.id }}
           zip -r "dist/${{ steps.parse.outputs.id }}-${{ steps.parse.outputs.version }}.zip" \
             ./${{ steps.parse.outputs.id }}
