@@ -26,7 +26,7 @@
             <screenshot>resources/screenshots/list.png</screenshot>
             <screenshot>resources/screenshots/view_modes.png</screenshot>
             <screenshot>resources/screenshots/select_cores.png</screenshot>
-            <screenshot>resources/screenshots/settings.png</screenshot>
+            <!-- <screenshot>resources/screenshots/settings.png</screenshot> -->
         </assets>
     </extension>
 </addon>
