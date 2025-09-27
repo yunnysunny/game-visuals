@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
     <category label="30304">
-        <setting id="rom_dirs"
+        <!-- <setting id="rom_dirs"
                  type="folder"
                  label="30303"
                  default=""
                  visible="true"
-                 />
+                 /> -->
         <setting id="use_two_column_view"
                  type="bool"
                  label="30305"
