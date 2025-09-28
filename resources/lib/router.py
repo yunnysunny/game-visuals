@@ -135,6 +135,8 @@ class GameDirectoryPlugin:
     def list_games_in_directory(self, directory):
         game_info = get_game_info(directory)
         skip_media_folders = self.addon.getSettingBool("skip_media_folders")
+        default_logo = f"{self.addon_path}/resources/logos/default.png"
+
         lang = xbmc.getLanguage(xbmc.ISO_639_1)
 
         for file in os.listdir(directory):
@@ -150,6 +152,9 @@ class GameDirectoryPlugin:
                     "full_name": file,
                 })
                 li = xbmcgui.ListItem(label=info["full_name"])
+                li.setProperty("IsCollection", "true")
+                li.setProperty("HasVideoExtras", "true")
+
                 description = info.get("description_zh", "") if lang == "zh" else info.get("description_en", "")
                 info_tag = li.getVideoInfoTag()
                 info_tag.setTitle(info["full_name"])
@@ -159,12 +164,16 @@ class GameDirectoryPlugin:
                 if os.path.exists(icon):
                     li.setArt({
                         "icon": icon,
-                        # "thumb": icon,
+                        "thumb": icon,
                         # "poster": icon,
-                        # "fanart": icon,
+                        # "banner": icon,
                     })
                 else:
-                    log(f"icon {icon} not found")
+                    # log(f"icon {icon} not found")
+                    li.setArt({
+                        'icon': default_logo,
+                        'thumb': default_logo,
+                    })
 
                 url = f"{self.base_url}?dir={urllib.parse.quote_plus(full_path)}&action=open"
                 xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=True)
@@ -195,12 +204,14 @@ class GameDirectoryPlugin:
                     li.setArt({
                         "icon": meta["thumb"],
                         "thumb": meta["thumb"],
-                        "poster": meta["thumb"],
+                        # "poster": meta["thumb"],
                         "fanart": meta["thumb"]
                     })
-                # else:
-                #     log(f"No thumb found for {meta['title']} {meta['thumb']}", level=xbmc.LOGINFO)
-
+                else:
+                    li.setArt({
+                        "icon": default_logo,
+                        "thumb": default_logo
+                    })
 
                 # ✅ 关键修改：不直接播放 ROM，而是绑定一个 “虚拟 URL” 用于点击后触发 RetroPlayer
                 # 使用 plugin:// 协议构造一个“跳转指令”，避免 Kodi 尝试解码 .nes

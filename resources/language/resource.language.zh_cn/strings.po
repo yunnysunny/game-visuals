@@ -11,8 +11,8 @@ msgid "Tips"
 msgstr "提示"
 
 msgctxt "#30301"
-msgid "Please set ROM directory in settings firstly"
-msgstr "请先在插件设置中添加 ROM 目录"
+msgid "Please add ROM directory firstly"
+msgstr "请先添加 ROM 目录"
 
 msgctxt "#30302"
 msgid "Parse error"
