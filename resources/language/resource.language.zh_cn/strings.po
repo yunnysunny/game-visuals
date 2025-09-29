@@ -34,3 +34,38 @@ msgctxt "#30306"
 msgid "Skip media folders"
 msgstr "跳过媒体文件夹: images video"
 
+msgctxt "#30307"
+msgid "Add games..."
+msgstr "添加游戏..."
+
+msgctxt "#30308"
+msgid "Remove"
+msgstr "删除"
+
+msgctxt "#30309"
+msgid "Select game folder"
+msgstr "选择游戏文件夹"
+
+msgctxt "#30310"
+msgid "Rom not exists"
+msgstr "ROM 不存在"
+
+msgctxt "#30311"
+msgid "Added"
+msgstr "已添加"
+
+msgctxt "#30312"
+msgid "Already exists"
+msgstr "已存在"
+
+msgctxt "#30313"
+msgid "Game Source"
+msgstr "游戏源"
+
+msgctxt "#30314"
+msgid "Added"
+msgstr "已添加"
+
+msgctxt "#30315"
+msgid "Removed"
+msgstr "已删除"

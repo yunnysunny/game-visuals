@@ -779,7 +779,10 @@ ROM_DIR_INFO = {
     }
 }
 
-MEDIA_FOLDERS = ["images", "videos"]
+MEDIA_FOLDERS = [
+    "images", "videos", "bezels", "BGM", "bios", "bios3", "ports_scripts", "savestates", "splash",
+    "downloads", "screenshots"
+]
 
 def is_rom_file(filename):
     """检查文件是否是ROM文件"""
