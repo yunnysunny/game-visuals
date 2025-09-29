@@ -2,7 +2,7 @@ import os
 import urllib.parse
 
 from .utils import get_game_info, log
-from .constants import ROM_EXTENSIONS, MEDIA_FOLDERS
+from .constants import ROM_EXTENSIONS, MEDIA_FOLDERS, ROM_DIR_INFO
 import xbmc
 import xbmcgui
 import xbmcplugin
@@ -19,15 +19,16 @@ VIEW_MODE_FANART = 502
 VIEW_MODE_NOW_PLAYING = 503
 VIEW_MODE_MEDIA_LIST = 504
 
+SETTING_KEY = "rom_dirs"
+
 class GameDirectoryPlugin:
     def __init__(self, handle, base_url, args, addon):
         self.handle = handle
         self.base_url = base_url
         self.args = args
         self.addon = addon
-
-    def route(self):
-
+        self.addon_path = addon.getAddonInfo('path')
+    def play_action(self):
         play_rom = self.args.get("play", [None])[0]  # ✅ 新增：检测 play 参数
         play_title = self.args.get("title", [None])[0]
         if play_rom:
@@ -38,15 +39,19 @@ class GameDirectoryPlugin:
             li = xbmcgui.ListItem(play_title)
             li.setPath(play_rom)   # 明确告诉 ListItem 代表哪个文件
             li.setInfo('game', {
-                'Title': play_title
+                'title': play_title
             })
             xbmc.Player().play(play_rom, li)
             xbmcplugin.endOfDirectory(self.handle, succeeded=True, cacheToDisc=False)  # ✅ 必须收尾
-
-            return  # 终止后续流程，不再渲染列表
-        # 2. 打开指定目录
+    def open_action(self):
         selected_dir = self.args.get("dir", [None])[0]
         if selected_dir:
+            if not os.path.exists(selected_dir):
+                tip = self.addon.getLocalizedString(30300)
+                tip_msg = self.addon.getLocalizedString(30310)
+                xbmcgui.Dialog().ok(tip, tip_msg)
+                xbmcplugin.endOfDirectory(self.handle, succeeded=False)
+                return
             use_two_column = self.addon.getSettingBool("use_two_column_view")
             if use_two_column:
                 # 使用正确的 RunScript 调用方式
@@ -54,14 +59,63 @@ class GameDirectoryPlugin:
                 xbmc.executebuiltin(f'RunScript({addon_id}, dir={urllib.parse.quote_plus(selected_dir)})')
             else:
                 self.list_games_in_directory(selected_dir)
+    def get_rom_dirs(self):
+        rom_dirs_str = self.addon.getSetting("rom_dirs")
+        rom_dirs = [d.strip() for d in rom_dirs_str.split("|") if d.strip()]
+        return rom_dirs
+    def save_dirs(self, dirs):
+        """保存目录列表到设置"""
+        self.addon.setSetting(SETTING_KEY, '|'.join(dirs))
+    def add_action(self):
+        """选择目录并保存"""
+        dialog = xbmcgui.Dialog()
+        selectGameFolderTxt = self.addon.getLocalizedString(30309)
+        folder = dialog.browse(3, selectGameFolderTxt, "files")
+        gameSourceTxt = self.addon.getLocalizedString(30313)
+        addedTxt = self.addon.getLocalizedString(30311)
+        alreadyExistsTxt = self.addon.getLocalizedString(30312)
+        if folder:
+            dirs = self.get_rom_dirs()
+            if folder not in dirs:
+                dirs.append(folder)
+                self.save_dirs(dirs)
+                xbmcgui.Dialog().notification(gameSourceTxt, f"{addedTxt}: {folder}", xbmcgui.NOTIFICATION_INFO, 3000)
+            else:
+                xbmcgui.Dialog().notification(gameSourceTxt, alreadyExistsTxt, xbmcgui.NOTIFICATION_WARNING, 2000)
+        xbmc.executebuiltin("Container.Refresh")
+    def remove_action(self):
+        """删除目录"""
+        path = self.args.get("dir", [None])[0]
+        dirs = self.get_rom_dirs()
+        gameSourceTxt = self.addon.getLocalizedString(30313)
+        removedTxt = self.addon.getLocalizedString(30315)
+        if path in dirs:
+            dirs.remove(path)
+            self.save_dirs(dirs)
+            xbmcgui.Dialog().notification(gameSourceTxt, f"{removedTxt}: {path}", xbmcgui.NOTIFICATION_INFO, 3000)
+        xbmc.executebuiltin("Container.Refresh")
+    def route(self):
+        action = self.args.get('action', [None])[0]
+        if action == 'play':
+            self.play_action()
+            return  # 终止后续流程，不再渲染列表
+        # 2. 打开指定目录
+        if action == 'open':
+            self.open_action()
             return
+        if action == 'add':
+            self.add_action()
+            return
+        if action == 'remove':
+            self.remove_action()
+            return
+        # 3. 根目录显示
         # 如果没有 last_dir，显示选择器
         log("Routing to root directory (show selector)", level=xbmc.LOGINFO)
         self.list_root()
 
     def list_root(self):
-        rom_dirs_str = self.addon.getSetting("rom_dirs")
-        rom_dirs = [d.strip() for d in rom_dirs_str.split("|") if d.strip()]
+        rom_dirs = self.get_rom_dirs()
         if not rom_dirs:
             tip = self.addon.getLocalizedString(30300)
             tip_msg = self.addon.getLocalizedString(30301)
@@ -71,15 +125,34 @@ class GameDirectoryPlugin:
 
         for d in rom_dirs:
             li = xbmcgui.ListItem(label=d)
-            url = f"{self.base_url}?dir={urllib.parse.quote_plus(d)}"
+            # 添加右键菜单：Remove
+            removeTxt = self.addon.getLocalizedString(30308)
+            li.addContextMenuItems([
+                (removeTxt, f"${self.base_url}?dir={urllib.parse.quote_plus(d)}&action=remove")
+            ])
+            url = f"{self.base_url}?dir={urllib.parse.quote_plus(d)}&action=open"
             xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=True)
-
+        
+        # 添加新目录
+        addTxt = self.addon.getLocalizedString(30307)
+        li = xbmcgui.ListItem(label=addTxt)
+        li.setArt({'icon': 'DefaultAddSource.png'})
+        xbmcplugin.addDirectoryItem(
+            self.handle,
+            f"{self.base_url}?action=add",
+            li,
+            isFolder=False
+        )
+        xbmc.executebuiltin('Container.SetViewMode(%d)' % VIEW_MODE_ICON_WALL)
         xbmcplugin.endOfDirectory(self.handle)   # ✅ 根目录必须收尾
     
     def list_games_in_directory(self, directory):
         game_info = get_game_info(directory)
         skip_media_folders = self.addon.getSettingBool("skip_media_folders")
+        default_logo = f"{self.addon_path}/resources/logos/default.png"
 
+        lang = xbmc.getLanguage(xbmc.ISO_639_1)
+        hasRomFile = False
         for file in os.listdir(directory):
             full_path = os.path.join(directory, file)
             # log(f"Found file: {file}", level=xbmc.LOGINFO)
@@ -89,18 +162,44 @@ class GameDirectoryPlugin:
                 if skip_media_folders and file.lower() in MEDIA_FOLDERS:
                     log(f"Skipping media folder: {file}", level=xbmc.LOGINFO)
                     continue
-                li = xbmcgui.ListItem(label=file)
-                url = f"{self.base_url}?dir={urllib.parse.quote_plus(full_path)}"
+                info = ROM_DIR_INFO.get(file.lower(), {
+                    "full_name": file,
+                })
+                li = xbmcgui.ListItem(label=info["full_name"])
+                li.setProperty("IsCollection", "true")
+                li.setProperty("HasVideoExtras", "true")
+
+                description = info.get("description_zh", "") if lang == "zh" else info.get("description_en", "")
+                info_tag = li.getVideoInfoTag()
+                info_tag.setTitle(info["full_name"])
+                info_tag.setPlot(description)
+                # https://kodi.wiki/view/Artwork_types
+                icon = f"{self.addon_path}/resources/logos/{file}.png"
+                if os.path.exists(icon):
+                    li.setArt({
+                        "icon": icon,
+                        "thumb": icon,
+                        # "poster": icon,
+                        # "banner": icon,
+                    })
+                else:
+                    # log(f"icon {icon} not found")
+                    li.setArt({
+                        'icon': default_logo,
+                        'thumb': default_logo,
+                    })
+
+                url = f"{self.base_url}?dir={urllib.parse.quote_plus(full_path)}&action=open"
                 xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=True)
                 continue
             if os.path.isfile(full_path):
                 if not file.lower().endswith(ROM_EXTENSIONS):
                     continue
-                
+                hasRomFile = True
                 meta = game_info.get(file, {
                     "title": file,
                     "plot": "",
-                    "thumb": "DefaultGame.png",
+                    "thumb": default_logo,
                     "trailer": ""
                 })
                 # log(f"Found meta file: {meta}", level=xbmc.LOGINFO)
@@ -117,17 +216,20 @@ class GameDirectoryPlugin:
                 #     log(f"No trailer found for {meta['title']} {meta['trailer']}", level=xbmc.LOGINFO)
                 if meta["thumb"] and os.path.exists(meta["thumb"]):
                     li.setArt({
+                        "icon": meta["thumb"],
                         "thumb": meta["thumb"],
-                        "poster": meta["thumb"],
+                        # "poster": meta["thumb"],
                         "fanart": meta["thumb"]
                     })
-                # else:
-                #     log(f"No thumb found for {meta['title']} {meta['thumb']}", level=xbmc.LOGINFO)
-
+                else:
+                    li.setArt({
+                        "icon": default_logo,
+                        "thumb": default_logo
+                    })
 
                 # ✅ 关键修改：不直接播放 ROM，而是绑定一个 “虚拟 URL” 用于点击后触发 RetroPlayer
                 # 使用 plugin:// 协议构造一个“跳转指令”，避免 Kodi 尝试解码 .nes
-                play_url = f"{self.base_url}?play={full_path}&title={meta['title']}"
+                play_url = f"{self.base_url}?play={full_path}&title={meta['title']}&action=play"
                 log(f"Adding playable item: {file}", level=xbmc.LOGINFO)
                 xbmcplugin.addDirectoryItem(
                     handle=self.handle,
@@ -135,10 +237,13 @@ class GameDirectoryPlugin:
                     listitem=li,
                     isFolder=False
                 )
-        xbmcplugin.setContent(self.handle, 'movies')
+        # https://xbmc.github.io/docs.kodi.tv/master/kodi-base/d1/d32/group__python__xbmcplugin.html#gaa30572d1e5d9d589e1cd3bfc1e2318d6
+        xbmcplugin.setContent(self.handle, 'games')
         # viewmode 可选枚举值：https://telaak.github.io/kodi-jsonrpc-api/types/ViewMode.html
         # https://kodi.wiki/view/HOW-TO%3AEstuary_Modification
-        xbmc.executebuiltin('Container.SetViewMode(%d)' % VIEW_MODE_SHIFT)
+        viewMode = VIEW_MODE_WIDE_LIST if hasRomFile else VIEW_MODE_SHIFT
+        log("view mode", viewMode)
+        xbmc.executebuiltin('Container.SetViewMode(%d)' % viewMode)
         xbmcplugin.endOfDirectory(self.handle)
 
  
