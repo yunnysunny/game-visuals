@@ -1,3 +1,8 @@
+## v0.3.0
+### Add
+1. Add icon for rom directory.
+2. Add multiple rom source support.
+
 ## v0.2.0
 ### Add
 1. Add option to skip media folders (images, videos) when browsing ROM directories.
