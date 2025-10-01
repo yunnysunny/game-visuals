@@ -1,5 +1,5 @@
 import xbmc
-import xbmcgui
+# import xbmcgui
 import os
 import xml.etree.ElementTree as ET
 
@@ -24,6 +24,10 @@ def get_game_info(directory):
                 plot = g.findtext("desc", "")
                 thumb = g.findtext("image", "")
                 trailer = g.findtext("video", "")
+                release_date = g.findtext("releasedate", "")
+                genre = g.findtext("genre", "")
+                year = 0
+                rating = g.findtext("rating", 0)
                 if thumb:
                     thumb = os.path.normpath(os.path.join(directory, thumb))
                     if not os.path.exists(thumb):
@@ -38,16 +42,23 @@ def get_game_info(directory):
                 rom_path = os.path.normpath(os.path.join(directory, fname))
                 if not os.path.exists(rom_path):
                     continue
+                if release_date and len(release_date) >= 4:
+                    year = int(release_date[:4])
+                if rating:
+                    rating = float(rating)
                 game_info[fname] = {
                     "path": rom_path,
                     "title": title,
                     "plot": plot,
                     "thumb": thumb,
-                    "trailer": trailer
+                    "trailer": trailer,
+                    "genre": genre,
+                    "year": year,
+                    "rating": rating,
                 }
             log(f"Found ROM list: {game_info}", level=xbmc.LOGINFO)
         except Exception as e:
             log(f"parse xml file error: {e}", level=xbmc.LOGWARNING)
-            parse_error = self.addon.getLocalizedString(30302)
-            xbmcgui.Dialog().notification(parse_error, str(e))
+            # parse_error = self.addon.getLocalizedString(30302)
+            # xbmcgui.Dialog().notification(parse_error, str(e))
     return game_info    

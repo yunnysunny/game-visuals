@@ -166,8 +166,8 @@ class GameDirectoryPlugin:
                     "full_name": file,
                 })
                 li = xbmcgui.ListItem(label=info["full_name"])
-                li.setProperty("IsCollection", "true")
-                li.setProperty("HasVideoExtras", "true")
+                # li.setProperty("IsCollection", "true")
+                # li.setProperty("HasVideoExtras", "true")
 
                 description = info.get("description_zh", "") if lang == "zh" else info.get("description_en", "")
                 info_tag = li.getVideoInfoTag()
@@ -200,7 +200,10 @@ class GameDirectoryPlugin:
                     "title": file,
                     "plot": "",
                     "thumb": default_logo,
-                    "trailer": ""
+                    "trailer": "",
+                    "year": 0,
+                    "genre": "",
+                    "rating": None,
                 })
                 # log(f"Found meta file: {meta}", level=xbmc.LOGINFO)
                 li = xbmcgui.ListItem(label=meta["title"])
@@ -208,6 +211,12 @@ class GameDirectoryPlugin:
                 info_tag = li.getVideoInfoTag()
                 info_tag.setTitle(meta["title"])
                 info_tag.setPlot(meta["plot"])
+                if meta["year"]:
+                    info_tag.setYear(meta['year'])
+                if meta['genre']:
+                    info_tag.setGenres([meta['genre']])
+                if meta['rating'] != None:
+                    info_tag.setRating(meta['rating'])
                 if meta["trailer"] and os.path.exists(meta["trailer"]):
                     li.setProperty("IsPlayable", "true")
                     info_tag.setTrailer(meta["trailer"])

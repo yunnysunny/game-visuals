@@ -12,7 +12,7 @@ While using Kodi as a home entertainment center, I found that it lacked an add-o
 
 ## Features
 
-* Supports direct use of EmulationStation’s **gamelist.xml** file without extra configuration.
+* Supports direct use of RecalBox’s **gamelist.xml** file without extra configuration, see [here](docs/wiki/en/gamelist-usage.md) for more details.
 * Automatically detects games in ROM folders and displays the corresponding visual resources.
 * Thanks to Kodi’s view-switching functionality, it offers multiple view modes so users can choose their preferred browsing style. Click the **Options** button in the bottom-left corner and select a **Viewtype** mode from the popup menu.
 

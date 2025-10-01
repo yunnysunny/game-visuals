@@ -781,7 +781,7 @@ ROM_DIR_INFO = {
 
 MEDIA_FOLDERS = [
     "images", "videos", "bezels", "BGM", "bios", "bios3", "ports_scripts", "savestates", "splash",
-    "downloads", "screenshots"
+    "downloads", "screenshots", "media"
 ]
 
 def is_rom_file(filename):
