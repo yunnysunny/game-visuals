@@ -779,6 +779,10 @@ ROM_DIR_INFO = {
     }
 }
 
+ZIPPED_ROM_DIRNAMES = [
+    "snes", "nes", "famicom", "sfc"
+]
+
 MEDIA_FOLDERS = [
     "images", "videos", "bezels", "BGM", "bios", "bios3", "ports_scripts", "savestates", "splash",
     "downloads", "screenshots", "media"

@@ -70,3 +70,8 @@ msgctxt "#30315"
 msgid "Removed"
 msgstr "Removed"
 
+msgctxt "#30316"
+msgid "invalid ROM"
+msgstr "invalid ROM"
+
+

@@ -39,5 +39,5 @@ If you encounter any issues or have suggestions for improvement, please feel fre
 
 ## TODO
 - [x] Add support for multiple root path for roms.
-- [ ] Improve compatibility with zipped ROMs.
+- [x] Improve compatibility with zipped ROMs.
 

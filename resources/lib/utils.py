@@ -2,6 +2,8 @@ import xbmc
 # import xbmcgui
 import os
 import xml.etree.ElementTree as ET
+import zipfile
+import xbmcvfs
 
 def log(msg, level=xbmc.LOGINFO):
     xbmc.log(f"[GamePoster] {msg}", level)
@@ -61,4 +63,22 @@ def get_game_info(directory):
             log(f"parse xml file error: {e}", level=xbmc.LOGWARNING)
             # parse_error = self.addon.getLocalizedString(30302)
             # xbmcgui.Dialog().notification(parse_error, str(e))
-    return game_info    
+    return game_info
+
+def extract_rom(zip_path, file_exts):
+    """解压 zip 文件"""
+    # 解压目标路径
+    extract_dir = xbmcvfs.translatePath("special://temp/roms/")
+    if not xbmcvfs.exists(extract_dir):
+        xbmcvfs.mkdirs(extract_dir)
+    with zipfile.ZipFile(zip_path, 'r') as zf:
+        file_list = zf.namelist()
+        total = len(file_list)
+        if total != 1:
+            return None
+        file = file_list[0]
+        if not file.endswith(file_exts):
+            return None
+        zf.extract(file, extract_dir)
+
+    return os.path.join(extract_dir, file_list[0])  # 返回第一个解压的文件路径

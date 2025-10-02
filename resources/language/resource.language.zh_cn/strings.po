@@ -69,3 +69,7 @@ msgstr "已添加"
 msgctxt "#30315"
 msgid "Removed"
 msgstr "已删除"
+
+msgctxt "#30316"
+msgid "invalid ROM"
+msgstr "无效的 ROM"
