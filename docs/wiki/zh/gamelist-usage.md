@@ -35,3 +35,5 @@
 
 这时候进入任意搜刮后的平台目录，就会发现多了 gamelist.xml 文件和 media 文件夹。
 
+![](../images/generated_media_files.png)
+

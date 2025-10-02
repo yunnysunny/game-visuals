@@ -36,3 +36,5 @@ When scraping is complete, a sound will play and the button in the lower right c
 ![](../images/finished.png)
 
 At this point, if you open any of the scraped platform directories, you’ll see a new **gamelist.xml** file along with a **media** folder.
+
+![](../images/generated_media_files.png)
