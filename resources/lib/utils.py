@@ -24,8 +24,9 @@ def get_game_info(directory):
                     continue
                 title = g.findtext("name", fname)
                 plot = g.findtext("desc", "")
-                thumb = g.findtext("image", "")
-                trailer = g.findtext("video", "")
+                thumb = g.findtext("thumbnail", None)
+                fanart = g.findtext("image", None)
+                trailer = g.findtext("video", None)
                 release_date = g.findtext("releasedate", "")
                 genre = g.findtext("genre", "")
                 year = 0
@@ -34,6 +35,10 @@ def get_game_info(directory):
                     thumb = os.path.normpath(os.path.join(directory, thumb))
                     if not os.path.exists(thumb):
                         thumb = None
+                if fanart:
+                    fanart = os.path.normpath(os.path.join(directory, fanart))
+                    if not os.path.exists(fanart):
+                        fanart = None
                 if trailer:
                     trailer = os.path.normpath(os.path.join(directory, trailer))
                     if not os.path.exists(trailer):
@@ -53,6 +58,7 @@ def get_game_info(directory):
                     "title": title,
                     "plot": plot,
                     "thumb": thumb,
+                    "fanart": fanart,
                     "trailer": trailer,
                     "genre": genre,
                     "year": year,

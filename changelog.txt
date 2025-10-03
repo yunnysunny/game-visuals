@@ -1,6 +1,10 @@
+## v0.6.0
+### Add
+1. Add support for separate fanart and thumbnail.
+
 ## v0.5.0
 ### Add
-1. Add support for zipped ROMs on rom directories: famicom nes sfc snes.
+1. Add support for zipped ROMs on rom directories: `famicom` `nes` `sfc` `snes`.
 
 ## v0.4.0
 ### Add

@@ -168,6 +168,7 @@ class GameDirectoryPlugin:
         game_info = get_game_info(directory)
         skip_media_folders = self.addon.getSettingBool("skip_media_folders")
         default_logo = f"{self.addon_path}/resources/logos/default.png"
+        default_fanart = self.addon.getAddonInfo('fanart')
 
         lang = xbmc.getLanguage(xbmc.ISO_639_1)
         hasRomFile = False
@@ -218,12 +219,13 @@ class GameDirectoryPlugin:
                     "title": file,
                     "plot": "",
                     "thumb": default_logo,
+                    "fanart": default_fanart,
                     "trailer": "",
                     "year": 0,
                     "genre": "",
                     "rating": None,
                 })
-                # log(f"Found meta file: {meta}", level=xbmc.LOGINFO)
+                log(f"Found meta file: {meta}", level=xbmc.LOGINFO)
                 li = xbmcgui.ListItem(label=meta["title"])
                 # 获取 Video InfoTag 对象
                 info_tag = li.getVideoInfoTag()
@@ -241,18 +243,15 @@ class GameDirectoryPlugin:
                 #     log(f"--- Trailer found for {meta['title']} {meta['trailer']} ---", level=xbmc.LOGINFO)
                 # else:
                 #     log(f"No trailer found for {meta['title']} {meta['trailer']}", level=xbmc.LOGINFO)
-                if meta["thumb"] and os.path.exists(meta["thumb"]):
-                    li.setArt({
-                        "icon": meta["thumb"],
-                        "thumb": meta["thumb"],
-                        "poster": meta["thumb"],
-                        "fanart": meta["thumb"]
-                    })
-                else:
-                    li.setArt({
-                        "icon": default_logo,
-                        "thumb": default_logo
-                    })
+                thumb = meta["thumb"] or default_logo
+                fanart = meta["fanart"] or default_fanart
+
+                li.setArt({
+                    "icon": thumb,
+                    "thumb": thumb,
+                    "poster": thumb,
+                    "fanart": fanart,
+                })
 
                 # ✅ 关键修改：不直接播放 ROM，而是绑定一个 “虚拟 URL” 用于点击后触发 RetroPlayer
                 # 使用 plugin:// 协议构造一个“跳转指令”，避免 Kodi 尝试解码 .nes

@@ -15,11 +15,11 @@
 
 ## 已知问题
 - 无法播放预览视频，由于 Koid 布局文件中的限制，没有区域可以显示预览视频。
-- 无法运行 zip 格式的 snes ROM 文件，Kodi 内置的 RetroPlayer 将 zip 文件中的 ROM 视作街机游戏 ROM，必须将其解压才能识别。
+- ~~无法运行 zip 格式的 snes ROM 文件，Kodi 内置的 RetroPlayer 将 zip 文件中的 ROM 视作街机游戏 ROM，必须将其解压才能识别。~~
 
 ## 许可协议
 
-本项目采用 **MIT 许可** - 详情请参阅 [LICENSE](LICENSE) 文件。
+本项目采用 **MIT 许可** - 详情请参阅 [LICENSE](LICENSE.txt) 文件。
 
 ## 支持
 
