@@ -107,6 +107,7 @@ class GameDirectoryPlugin:
         dirs = self.get_rom_dirs()
         gameSourceTxt = self.addon.getLocalizedString(30313)
         removedTxt = self.addon.getLocalizedString(30315)
+        log(f"Removing directory: {path}")
         if path in dirs:
             dirs.remove(path)
             self.save_dirs(dirs)
@@ -138,15 +139,15 @@ class GameDirectoryPlugin:
             tip = self.addon.getLocalizedString(30300)
             tip_msg = self.addon.getLocalizedString(30301)
             xbmcgui.Dialog().ok(tip, tip_msg)
-            xbmcplugin.endOfDirectory(self.handle, succeeded=False)
-            return
+            # xbmcplugin.endOfDirectory(self.handle, succeeded=False)
+            # return
 
         for d in rom_dirs:
             li = xbmcgui.ListItem(label=d)
             # 添加右键菜单：Remove
             removeTxt = self.addon.getLocalizedString(30308)
             li.addContextMenuItems([
-                (removeTxt, f"${self.base_url}?dir={urllib.parse.quote_plus(d)}&action=remove")
+                (removeTxt, f"RunPlugin({self.base_url}?dir={urllib.parse.quote_plus(d)}&action=remove)")
             ])
             url = f"{self.base_url}?dir={urllib.parse.quote_plus(d)}&action=open"
             xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=True)
@@ -243,7 +244,7 @@ class GameDirectoryPlugin:
                 #     log(f"--- Trailer found for {meta['title']} {meta['trailer']} ---", level=xbmc.LOGINFO)
                 # else:
                 #     log(f"No trailer found for {meta['title']} {meta['trailer']}", level=xbmc.LOGINFO)
-                thumb = meta["thumb"] or default_logo
+                thumb = meta["thumb"] or meta["fanart"] or default_logo
                 fanart = meta["fanart"] or default_fanart
 
                 li.setArt({
