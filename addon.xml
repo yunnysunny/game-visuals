@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.game-visuals"
        name="Game Visuals"
-       version="0.5.0"
+       version="0.6.0"
        provider-name="whyun">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
