@@ -19,6 +19,8 @@ ROM_EXTENSIONS = (
     ".iso", ".bin", ".cue",  # CD-ROM consoles (PS1, Saturn, etc.)
     ".pce",  # PC Engine/TurboGrafx-16
     ".a26",  # Atari 2600
+    ".cdi", # dreamcast
+    ".gdi",  # CD-ROM consoles (PS2, etc.)
     
     # 其他经典/流行平台
     ".sg", ".wsc",  # WonderSwan
