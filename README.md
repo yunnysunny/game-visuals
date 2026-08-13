@@ -1,3 +1,5 @@
+
+
 # Game Visuals (游戏画廊)
 
 [中文文档](docs/README_zh.md)
@@ -22,8 +24,6 @@ While using Kodi as a home entertainment center, I found that it lacked an add-o
 
 - **Preview Videos:** Cannot be played due to limitations in Kodi’s layout files, which do not provide a dedicated area for video previews.
 
-- ~~**ZIP SNES ROMs:** SNES ROMs compressed in .zip format cannot be launched directly. Kodi’s built-in RetroPlayer treats zipped ROMs as arcade ROMs, so they must be extracted before use.~~
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details.
@@ -42,4 +42,3 @@ If you encounter any issues or have suggestions for improvement, please feel fre
 - [x] Improve compatibility with zipped ROMs.
 - [ ] Add support for default ROM base path.
 - [ ] Add support for custom information panel.
-
