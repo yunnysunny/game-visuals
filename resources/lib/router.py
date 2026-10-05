@@ -53,11 +53,13 @@ class GameDirectoryPlugin:
                 xbmcgui.Dialog().ok(tip, tip_msg)
                 xbmcplugin.endOfDirectory(self.handle, succeeded=False)
                 return
-            use_two_column = self.addon.getSettingBool("use_two_column_view")
-            if use_two_column:
-                # 使用正确的 RunScript 调用方式
+            layout = self.addon.getSettingInt("browse_layout")
+            if layout:
+                # 自定义布局在独立窗口中打开，当前插件目录保持不变
                 addon_id = self.addon.getAddonInfo("id")
-                xbmc.executebuiltin(f'RunScript({addon_id}, dir={urllib.parse.quote_plus(selected_dir)})')
+                browse_args = urllib.parse.urlencode({"action": "browse", "dir": selected_dir, "layout": layout})
+                xbmc.executebuiltin(f'RunScript({addon_id}, {browse_args})')
+                xbmcplugin.endOfDirectory(self.handle, succeeded=False)
             else:
                 rom_dirname = self.args.get("rom_dirname", [None])[0]
                 self.list_games_in_directory(selected_dir, rom_dirname)

@@ -7,10 +7,11 @@
                  default=""
                  visible="true"
                  /> -->
-        <setting id="use_two_column_view"
-                 type="bool"
-                 label="30305"
-                 default="false"
+        <setting id="browse_layout"
+                 type="enum"
+                 label="30330"
+                 lvalues="30331|30332|30333|30334|30335"
+                 default="0"
                  visible="true"
                  />
         <setting id="skip_media_folders"
