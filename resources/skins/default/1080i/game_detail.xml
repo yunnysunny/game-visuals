@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 游戏详情页：由 resources/lib/detail_window.py 通过 Window.Property 填充数据 -->
+<window>
+    <defaultcontrol always="true">10</defaultcontrol>
+    <controls>
+        <!-- 背景：截图 + 压暗遮罩 -->
+        <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>1920</width>
+            <height>1080</height>
+            <aspectratio>scale</aspectratio>
+            <texture>$INFO[Window.Property(fanart)]</texture>
+        </control>
+        <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>1920</width>
+            <height>1080</height>
+            <texture colordiffuse="C8080A0E">white.png</texture>
+        </control>
+
+        <!-- 面板 -->
+        <control type="image">
+            <left>120</left>
+            <top>70</top>
+            <width>1680</width>
+            <height>940</height>
+            <texture colordiffuse="F8171B22">white.png</texture>
+        </control>
+
+        <!-- 左栏：封面 + ROM 路径 -->
+        <control type="image">
+            <left>176</left>
+            <top>122</top>
+            <width>330</width>
+            <height>440</height>
+            <aspectratio aligny="top">keep</aspectratio>
+            <texture fallback="DefaultGame.png">$INFO[Window.Property(thumb)]</texture>
+        </control>
+        <control type="textbox">
+            <left>176</left>
+            <top>586</top>
+            <width>330</width>
+            <height>160</height>
+            <font>font10</font>
+            <textcolor>FF9AA3B2</textcolor>
+            <label>$INFO[Window.Property(path)]</label>
+        </control>
+
+        <!-- 右栏：标题 -->
+        <control type="label">
+            <left>558</left>
+            <top>116</top>
+            <width>1186</width>
+            <height>70</height>
+            <font>font52_title</font>
+            <textcolor>FFECEEF2</textcolor>
+            <scroll>true</scroll>
+            <label>$INFO[Window.Property(title)]</label>
+        </control>
+        <control type="label">
+            <left>558</left>
+            <top>190</top>
+            <width>1186</width>
+            <height>36</height>
+            <font>font27</font>
+            <textcolor>FFF2B33D</textcolor>
+            <label>$INFO[Window.Property(platform)]</label>
+        </control>
+
+        <!-- 信息格：没有值的字段自动隐藏 -->
+        <control type="image">
+            <left>558</left>
+            <top>244</top>
+            <width>1186</width>
+            <height>104</height>
+            <texture colordiffuse="FF11151B">white.png</texture>
+        </control>
+        <control type="grouplist">
+            <left>582</left>
+            <top>260</top>
+            <width>1140</width>
+            <height>76</height>
+            <orientation>horizontal</orientation>
+            <itemgap>16</itemgap>
+            <usecontrolcoords>true</usecontrolcoords>
+            <control type="group">
+                <width>130</width>
+                <height>76</height>
+                <visible>!String.IsEmpty(Window.Property(year))</visible>
+                <control type="label">
+                    <height>30</height>
+                    <font>font10</font>
+                    <textcolor>FF9AA3B2</textcolor>
+                    <label>$ADDON[plugin.video.game-visuals 30322]</label>
+                </control>
+                <control type="label">
+                    <top>32</top>
+                    <height>40</height>
+                    <font>font27</font>
+                    <label>$INFO[Window.Property(year)]</label>
+                </control>
+            </control>
+            <control type="group">
+                <width>240</width>
+                <height>76</height>
+                <visible>!String.IsEmpty(Window.Property(genre))</visible>
+                <control type="label">
+                    <height>30</height>
+                    <font>font10</font>
+                    <textcolor>FF9AA3B2</textcolor>
+                    <label>$ADDON[plugin.video.game-visuals 30323]</label>
+                </control>
+                <control type="label">
+                    <top>32</top>
+                    <height>40</height>
+                    <font>font27</font>
+                    <label>$INFO[Window.Property(genre)]</label>
+                </control>
+            </control>
+            <control type="group">
+                <width>230</width>
+                <height>76</height>
+                <visible>!String.IsEmpty(Window.Property(developer))</visible>
+                <control type="label">
+                    <height>30</height>
+                    <font>font10</font>
+                    <textcolor>FF9AA3B2</textcolor>
+                    <label>$ADDON[plugin.video.game-visuals 30324]</label>
+                </control>
+                <control type="label">
+                    <top>32</top>
+                    <height>40</height>
+                    <font>font27</font>
+                    <label>$INFO[Window.Property(developer)]</label>
+                </control>
+            </control>
+            <control type="group">
+                <width>230</width>
+                <height>76</height>
+                <visible>!String.IsEmpty(Window.Property(publisher))</visible>
+                <control type="label">
+                    <height>30</height>
+                    <font>font10</font>
+                    <textcolor>FF9AA3B2</textcolor>
+                    <label>$ADDON[plugin.video.game-visuals 30325]</label>
+                </control>
+                <control type="label">
+                    <top>32</top>
+                    <height>40</height>
+                    <font>font27</font>
+                    <label>$INFO[Window.Property(publisher)]</label>
+                </control>
+            </control>
+            <control type="group">
+                <width>100</width>
+                <height>76</height>
+                <visible>!String.IsEmpty(Window.Property(players))</visible>
+                <control type="label">
+                    <height>30</height>
+                    <font>font10</font>
+                    <textcolor>FF9AA3B2</textcolor>
+                    <label>$ADDON[plugin.video.game-visuals 30326]</label>
+                </control>
+                <control type="label">
+                    <top>32</top>
+                    <height>40</height>
+                    <font>font27</font>
+                    <label>$INFO[Window.Property(players)]</label>
+                </control>
+            </control>
+            <control type="group">
+                <width>130</width>
+                <height>76</height>
+                <visible>!String.IsEmpty(Window.Property(rating))</visible>
+                <control type="label">
+                    <height>30</height>
+                    <font>font10</font>
+                    <textcolor>FF9AA3B2</textcolor>
+                    <label>$ADDON[plugin.video.game-visuals 30327]</label>
+                </control>
+                <control type="label">
+                    <top>32</top>
+                    <height>40</height>
+                    <font>font27</font>
+                    <textcolor>FFF2B33D</textcolor>
+                    <label>$INFO[Window.Property(rating)]</label>
+                </control>
+            </control>
+            <control type="label">
+                <width>600</width>
+                <height>76</height>
+                <font>font12</font>
+                <textcolor>FF9AA3B2</textcolor>
+                <aligny>center</aligny>
+                <label>$ADDON[plugin.video.game-visuals 30329]</label>
+                <visible>String.IsEmpty(Window.Property(year)) + String.IsEmpty(Window.Property(genre)) + String.IsEmpty(Window.Property(developer)) + String.IsEmpty(Window.Property(publisher)) + String.IsEmpty(Window.Property(players)) + String.IsEmpty(Window.Property(rating))</visible>
+            </control>
+        </control>
+
+        <!-- 预告片：播放时显示视频，否则显示截图 -->
+        <control type="group">
+            <left>558</left>
+            <top>380</top>
+            <control type="image">
+                <width>704</width>
+                <height>396</height>
+                <texture colordiffuse="FF000000">white.png</texture>
+            </control>
+            <control type="image">
+                <width>704</width>
+                <height>396</height>
+                <aspectratio>keep</aspectratio>
+                <texture>$INFO[Window.Property(fanart)]</texture>
+                <visible>!Player.HasVideo</visible>
+            </control>
+            <control type="videowindow">
+                <width>704</width>
+                <height>396</height>
+                <visible>Player.HasVideo</visible>
+            </control>
+            <control type="image">
+                <top>340</top>
+                <width>704</width>
+                <height>56</height>
+                <texture colordiffuse="D8000000">white.png</texture>
+                <visible>Player.HasVideo | String.IsEmpty(Window.Property(trailer))</visible>
+            </control>
+            <control type="label">
+                <left>16</left>
+                <top>350</top>
+                <width>672</width>
+                <height>32</height>
+                <font>font10</font>
+                <label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+                <visible>Player.HasVideo</visible>
+            </control>
+            <control type="label">
+                <left>16</left>
+                <top>350</top>
+                <width>672</width>
+                <height>32</height>
+                <font>font10</font>
+                <textcolor>FF9AA3B2</textcolor>
+                <label>$ADDON[plugin.video.game-visuals 30328]</label>
+                <visible>String.IsEmpty(Window.Property(trailer))</visible>
+            </control>
+        </control>
+
+        <!-- 简介 -->
+        <control type="label">
+            <left>1294</left>
+            <top>376</top>
+            <width>450</width>
+            <height>36</height>
+            <font>font12</font>
+            <textcolor>FF9AA3B2</textcolor>
+            <label>$ADDON[plugin.video.game-visuals 30321]</label>
+        </control>
+        <control type="textbox">
+            <left>1294</left>
+            <top>418</top>
+            <width>450</width>
+            <height>358</height>
+            <font>font12</font>
+            <textcolor>FFC9CED8</textcolor>
+            <autoscroll delay="6000" time="3000" repeat="8000">true</autoscroll>
+            <label>$INFO[Window.Property(plot)]</label>
+        </control>
+
+        <!-- 按钮 -->
+        <control type="grouplist">
+            <left>558</left>
+            <top>850</top>
+            <width>1186</width>
+            <height>64</height>
+            <orientation>horizontal</orientation>
+            <itemgap>18</itemgap>
+            <onup>noop</onup>
+            <ondown>noop</ondown>
+            <control type="button" id="10">
+                <width>260</width>
+                <height>64</height>
+                <font>font27</font>
+                <align>center</align>
+                <aligny>center</aligny>
+                <textcolor>FFECEEF2</textcolor>
+                <focusedcolor>FF1A1206</focusedcolor>
+                <texturefocus colordiffuse="FFF2B33D">white.png</texturefocus>
+                <texturenofocus colordiffuse="FF2A303B">white.png</texturenofocus>
+                <label>$ADDON[plugin.video.game-visuals 30318]</label>
+            </control>
+            <control type="button" id="11">
+                <width>320</width>
+                <height>64</height>
+                <font>font27</font>
+                <align>center</align>
+                <aligny>center</aligny>
+                <textcolor>FFECEEF2</textcolor>
+                <focusedcolor>FF1A1206</focusedcolor>
+                <texturefocus colordiffuse="FFF2B33D">white.png</texturefocus>
+                <texturenofocus colordiffuse="FF2A303B">white.png</texturenofocus>
+                <label>$ADDON[plugin.video.game-visuals 30319]</label>
+                <visible>!String.IsEmpty(Window.Property(trailer))</visible>
+            </control>
+            <control type="button" id="12">
+                <width>180</width>
+                <height>64</height>
+                <font>font27</font>
+                <align>center</align>
+                <aligny>center</aligny>
+                <textcolor>FFECEEF2</textcolor>
+                <focusedcolor>FF1A1206</focusedcolor>
+                <texturefocus colordiffuse="FFF2B33D">white.png</texturefocus>
+                <texturenofocus colordiffuse="FF2A303B">white.png</texturenofocus>
+                <label>$ADDON[plugin.video.game-visuals 30320]</label>
+            </control>
+        </control>
+    </controls>
+</window>

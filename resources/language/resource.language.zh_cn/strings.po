@@ -73,3 +73,55 @@ msgstr "已删除"
 msgctxt "#30316"
 msgid "invalid ROM"
 msgstr "无效的 ROM"
+
+msgctxt "#30317"
+msgid "Game details"
+msgstr "游戏详情"
+
+msgctxt "#30318"
+msgid "Play game"
+msgstr "开始游戏"
+
+msgctxt "#30319"
+msgid "Fullscreen trailer"
+msgstr "全屏预告"
+
+msgctxt "#30320"
+msgid "Back"
+msgstr "返回"
+
+msgctxt "#30321"
+msgid "Plot"
+msgstr "简介"
+
+msgctxt "#30322"
+msgid "Year"
+msgstr "年份"
+
+msgctxt "#30323"
+msgid "Genre"
+msgstr "类型"
+
+msgctxt "#30324"
+msgid "Developer"
+msgstr "开发商"
+
+msgctxt "#30325"
+msgid "Publisher"
+msgstr "发行商"
+
+msgctxt "#30326"
+msgid "Players"
+msgstr "人数"
+
+msgctxt "#30327"
+msgid "Rating"
+msgstr "评分"
+
+msgctxt "#30328"
+msgid "No trailer"
+msgstr "暂无预告片"
+
+msgctxt "#30329"
+msgid "No more details"
+msgstr "暂无更多信息"

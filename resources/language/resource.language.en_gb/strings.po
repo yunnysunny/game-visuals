@@ -74,4 +74,54 @@ msgctxt "#30316"
 msgid "invalid ROM"
 msgstr "invalid ROM"
 
+msgctxt "#30317"
+msgid "Game details"
+msgstr "Game details"
 
+msgctxt "#30318"
+msgid "Play game"
+msgstr "Play game"
+
+msgctxt "#30319"
+msgid "Fullscreen trailer"
+msgstr "Fullscreen trailer"
+
+msgctxt "#30320"
+msgid "Back"
+msgstr "Back"
+
+msgctxt "#30321"
+msgid "Plot"
+msgstr "Plot"
+
+msgctxt "#30322"
+msgid "Year"
+msgstr "Year"
+
+msgctxt "#30323"
+msgid "Genre"
+msgstr "Genre"
+
+msgctxt "#30324"
+msgid "Developer"
+msgstr "Developer"
+
+msgctxt "#30325"
+msgid "Publisher"
+msgstr "Publisher"
+
+msgctxt "#30326"
+msgid "Players"
+msgstr "Players"
+
+msgctxt "#30327"
+msgid "Rating"
+msgstr "Rating"
+
+msgctxt "#30328"
+msgid "No trailer"
+msgstr "No trailer"
+
+msgctxt "#30329"
+msgid "No more details"
+msgstr "No more details"

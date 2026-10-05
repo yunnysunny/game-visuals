@@ -4,6 +4,7 @@ import os
 import xml.etree.ElementTree as ET
 
 from .utils import get_game_info, log
+from .detail_window import show_game_detail
 from .constants import ROM_EXTENSIONS, MEDIA_FOLDERS
 import xbmcaddon
 
@@ -14,6 +15,7 @@ ACTION_NAV_BACK = 92  # 也是返回键（遥控器/ESC）
 ACTION_MOVE_UP = 3
 ACTION_MOVE_DOWN = 4
 ACTION_MOUSE_MOVE = 107
+ACTION_SHOW_INFO = 11
 
 
 class MyWindow(xbmcgui.WindowXML):
@@ -68,6 +70,11 @@ class MyWindow(xbmcgui.WindowXML):
             self.dir = last_dir
             self.refresh_list(False)
             return  # ✅ 关键：return 不调用 super()，阻止默认关闭行为
+        if action_id == ACTION_SHOW_INFO and self.getFocusId() == 101:
+            selected_path = self.list_control.getSelectedItem().getProperty("path")
+            if os.path.isfile(selected_path):
+                show_game_detail(self.dir, os.path.basename(selected_path), os.path.basename(self.dir).lower())
+            return
         if action_id in [ACTION_MOVE_UP, ACTION_MOVE_DOWN, ACTION_MOUSE_MOVE]:
             control = self.getFocusId()
             if control == 101:
