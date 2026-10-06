@@ -4,7 +4,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from .utils import get_game_info, log, play_rom
+from .utils import card_color, get_game_info, log, play_rom
 from .constants import ROM_DIR_INFO
 
 addon = xbmcaddon.Addon()
@@ -44,7 +44,6 @@ class GameDetailWindow(xbmcgui.WindowXML):
 
     def onInit(self):
         meta = self.meta
-        default_fanart = addon.getAddonInfo("fanart")
         default_logo = os.path.join(addon.getAddonInfo("path"), "resources", "logos", "default.png")
         platform = ROM_DIR_INFO.get(self.rom_dirname or os.path.basename(self.rom_dir).lower(), {})
 
@@ -53,7 +52,10 @@ class GameDetailWindow(xbmcgui.WindowXML):
         self.setProperty("path", self.rom_path)
         self.setProperty("plot", meta.get("plot", ""))
         self.setProperty("thumb", meta.get("thumb") or meta.get("fanart") or default_logo)
-        self.setProperty("fanart", meta.get("fanart") or default_fanart)
+        self.setProperty("fanart", meta.get("fanart") or "")
+        self.setProperty("nocover", "" if meta.get("thumb") or meta.get("fanart") else "true")
+        media_path = os.path.join(addon.getAddonInfo("path"), "resources", "skins", "default", "media")
+        self.setProperty("cover_color", card_color(media_path, self.rom_file))
         self.setProperty("year", str(meta["year"]) if meta.get("year") else "")
         self.setProperty("genre", meta.get("genre", ""))
         self.setProperty("developer", meta.get("developer", ""))

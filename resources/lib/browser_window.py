@@ -6,7 +6,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from .utils import get_game_info, log, play_rom
+from .utils import card_color, get_game_info, log, play_rom
 from .constants import ROM_EXTENSIONS, MEDIA_FOLDERS, ROM_DIR_INFO
 from .detail_window import format_rating, show_game_detail
 
@@ -28,7 +28,6 @@ ACTION_CONTEXT_MENU = 117
 CONTROL_LIST = 50
 # 焦点在同一个游戏上停留多久后开始播放预告片（秒）
 PREVIEW_DELAY = 1.5
-CART_LABEL_COUNT = 8
 
 
 class GameBrowserWindow(xbmcgui.WindowXML):
@@ -65,7 +64,6 @@ class GameBrowserWindow(xbmcgui.WindowXML):
         game_info = get_game_info(directory)
         skip_media_folders = addon.getSettingBool("skip_media_folders")
         default_logo = os.path.join(addon.getAddonInfo("path"), "resources", "logos", "default.png")
-        default_fanart = addon.getAddonInfo("fanart")
         rom_dirname = os.path.basename(directory).lower()
         platform = ROM_DIR_INFO.get(rom_dirname, {}).get("full_name", "")
 
@@ -100,7 +98,8 @@ class GameBrowserWindow(xbmcgui.WindowXML):
                 "thumb": thumb,
                 "poster": thumb,
                 "icon": thumb,
-                "fanart": meta.get("fanart") or default_fanart,
+                # 没有截图时留空，背景保持深色，避免插件宣传图喧宾夺主
+                "fanart": meta.get("fanart") or "",
             })
             li.setProperty("path", full_path)
             li.setProperty("file", name)
@@ -114,12 +113,13 @@ class GameBrowserWindow(xbmcgui.WindowXML):
             li.setProperty("players", meta.get("players", ""))
             li.setProperty("rating", format_rating(meta.get("rating")))
             li.setProperty("trailer", meta.get("trailer") or "")
+            # 既没有封面也没有截图时，XML 显示带标题的兜底卡片
+            li.setProperty("nocover", "" if meta.get("thumb") or meta.get("fanart") else "true")
+            li.setProperty("cart_label", card_color(self.media_path, name))
             games.append(li)
 
         folders.sort(key=lambda li: li.getLabel().lower())
         games.sort(key=lambda li: li.getLabel().lower())
-        for i, li in enumerate(games):
-            li.setProperty("cart_label", os.path.join(self.media_path, f"cart_label_{i % CART_LABEL_COUNT}.png"))
         return folders + games, platform, len(games)
 
     def load_dir(self, directory, select_path=None):

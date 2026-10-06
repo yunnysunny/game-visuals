@@ -66,7 +66,16 @@
                     <width>33</width>
                     <height>44</height>
                     <aspectratio>keep</aspectratio>
-                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    <texture diffuse="mask_cover.png">$INFO[ListItem.Art(thumb)]</texture>
+                    <visible>!String.IsEqual(ListItem.Property(nocover),true)</visible>
+                </control>
+                <control type="image">
+                    <left>16</left>
+                    <top>13</top>
+                    <width>33</width>
+                    <height>44</height>
+                    <texture diffuse="mask_cover.png">$INFO[ListItem.Property(cart_label)]</texture>
+                    <visible>String.IsEqual(ListItem.Property(nocover),true)</visible>
                 </control>
                 <control type="label">
                     <left>66</left>
@@ -82,7 +91,7 @@
                 <control type="image">
                     <width>600</width>
                     <height>66</height>
-                    <texture colordiffuse="FFF2B33D">white.png</texture>
+                    <texture border="8" colordiffuse="FFF2B33D">round8.png</texture>
                     <visible>Control.HasFocus(50)</visible>
                 </control>
                 <control type="image">
@@ -91,7 +100,16 @@
                     <width>33</width>
                     <height>44</height>
                     <aspectratio>keep</aspectratio>
-                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    <texture diffuse="mask_cover.png">$INFO[ListItem.Art(thumb)]</texture>
+                    <visible>!String.IsEqual(ListItem.Property(nocover),true)</visible>
+                </control>
+                <control type="image">
+                    <left>16</left>
+                    <top>11</top>
+                    <width>33</width>
+                    <height>44</height>
+                    <texture diffuse="mask_cover.png">$INFO[ListItem.Property(cart_label)]</texture>
+                    <visible>String.IsEqual(ListItem.Property(nocover),true)</visible>
                 </control>
                 <control type="label">
                     <left>66</left>
@@ -111,16 +129,23 @@
             <left>728</left>
             <top>140</top>
             <control type="image">
-                <width>1120</width>
-                <height>540</height>
-                <texture colordiffuse="FF000000">white.png</texture>
+                <left>-24</left>
+                <top>-24</top>
+                <width>1168</width>
+                <height>588</height>
+                <texture border="40">shadow.png</texture>
             </control>
             <control type="image">
                 <width>1120</width>
                 <height>540</height>
+                <texture border="16" colordiffuse="FF000000">round16.png</texture>
+            </control>
+            <control type="image">
+                <width>1120</width>
+                <height>492</height>
                 <aspectratio>keep</aspectratio>
                 <fadetime>200</fadetime>
-                <texture>$INFO[Container(50).ListItem.Art(fanart)]</texture>
+                <texture diffuse="mask_video.png">$INFO[Container(50).ListItem.Art(fanart)]</texture>
                 <visible>!Player.HasVideo + !String.IsEqual(Container(50).ListItem.Property(isfolder),true)</visible>
             </control>
             <control type="image">
@@ -132,32 +157,44 @@
                 <texture>$INFO[Container(50).ListItem.Art(thumb)]</texture>
                 <visible>String.IsEqual(Container(50).ListItem.Property(isfolder),true)</visible>
             </control>
+            <control type="label">
+                <left>0</left>
+                <width>1120</width>
+                <height>492</height>
+                <font>font13</font>
+                <align>center</align>
+                <aligny>center</aligny>
+                <textcolor>FF5C6370</textcolor>
+                <label>$ADDON[plugin.video.game-visuals 30340]</label>
+                <visible>!Player.HasVideo + String.IsEmpty(Container(50).ListItem.Art(fanart)) + !String.IsEqual(Container(50).ListItem.Property(isfolder),true)</visible>
+            </control>
             <control type="videowindow">
                 <width>1120</width>
-                <height>540</height>
+                <height>492</height>
                 <visible>Player.HasVideo</visible>
             </control>
             <control type="image">
-                <top>484</top>
-                <width>1120</width>
-                <height>56</height>
-                <texture colordiffuse="C0000000">white.png</texture>
+                <left>24</left>
+                <top>492</top>
+                <width>1072</width>
+                <height>1</height>
+                <texture colordiffuse="30FFFFFF">white.png</texture>
                 <visible>Player.HasVideo | !String.IsEmpty(Container(50).ListItem.Property(trailer))</visible>
             </control>
             <control type="label">
-                <left>24</left>
-                <top>484</top>
-                <width>1072</width>
-                <height>56</height>
+                <left>36</left>
+                <top>492</top>
+                <width>1048</width>
+                <height>48</height>
                 <font>font12</font>
                 <label>$ADDON[plugin.video.game-visuals 30337]  $INFO[Player.Time]$INFO[Player.Duration, / ]</label>
                 <visible>Player.HasVideo</visible>
             </control>
             <control type="label">
-                <left>24</left>
-                <top>484</top>
-                <width>1072</width>
-                <height>56</height>
+                <left>36</left>
+                <top>492</top>
+                <width>1048</width>
+                <height>48</height>
                 <font>font12</font>
                 <textcolor>FF9AA3B2</textcolor>
                 <label>$ADDON[plugin.video.game-visuals 30338]</label>
@@ -165,16 +202,54 @@
             </control>
         </control>
 
-        <!-- 右栏：封面 + 信息 -->
-        <control type="image">
+        <!-- 右栏：封面（无封面时显示带标题的兜底卡片） -->
+        <control type="group">
             <left>728</left>
             <top>708</top>
-            <width>210</width>
-            <height>280</height>
-            <aspectratio aligny="top">keep</aspectratio>
-            <texture>$INFO[Container(50).ListItem.Art(thumb)]</texture>
             <visible>!String.IsEqual(Container(50).ListItem.Property(isfolder),true)</visible>
+            <control type="image">
+                <left>-24</left>
+                <top>-24</top>
+                <width>258</width>
+                <height>328</height>
+                <texture border="40">shadow.png</texture>
+            </control>
+            <control type="image">
+                <width>210</width>
+                <height>280</height>
+                <texture border="8" colordiffuse="FF171B22">round8.png</texture>
+            </control>
+            <control type="image">
+                <width>210</width>
+                <height>280</height>
+                <aspectratio>keep</aspectratio>
+                <texture diffuse="mask_cover.png">$INFO[Container(50).ListItem.Art(thumb)]</texture>
+                <visible>!String.IsEqual(Container(50).ListItem.Property(nocover),true)</visible>
+            </control>
+            <control type="group">
+                <visible>String.IsEqual(Container(50).ListItem.Property(nocover),true)</visible>
+                <control type="image">
+                    <width>210</width>
+                    <height>280</height>
+                    <texture diffuse="mask_cover.png">$INFO[Container(50).ListItem.Property(cart_label)]</texture>
+                </control>
+                <control type="image">
+                    <width>210</width>
+                    <height>280</height>
+                    <texture diffuse="mask_cover.png">cover_pattern.png</texture>
+                </control>
+                <control type="textbox">
+                    <left>16</left>
+                    <top>196</top>
+                    <width>178</width>
+                    <height>76</height>
+                    <font>font12</font>
+                    <label>[B]$INFO[Container(50).ListItem.Label][/B]</label>
+                </control>
+            </control>
         </control>
+
+        <!-- 右栏：标题 + 标签 + 简介 -->
         <control type="group">
             <left>970</left>
             <top>700</top>
@@ -184,18 +259,83 @@
                 <font>font37</font>
                 <label>[B]$INFO[Container(50).ListItem.Label][/B]</label>
             </control>
-            <control type="label">
-                <top>58</top>
+            <control type="grouplist">
+                <top>62</top>
                 <width>878</width>
-                <height>36</height>
-                <font>font12</font>
-                <textcolor>FFF2B33D</textcolor>
-                <label>$INFO[Container(50).ListItem.Property(year)]$INFO[Container(50).ListItem.Property(genre), · ]$INFO[Container(50).ListItem.Property(developer), · ]$INFO[Container(50).ListItem.Property(players), · ,P]$INFO[Container(50).ListItem.Property(rating), · ★ ]</label>
+                <height>40</height>
+                <orientation>horizontal</orientation>
+                <itemgap>10</itemgap>
+                <usecontrolcoords>true</usecontrolcoords>
+                <control type="button">
+                    <width>auto</width>
+                    <height>40</height>
+                    <font>font12</font>
+                    <textoffsetx>18</textoffsetx>
+                    <aligny>center</aligny>
+                    <enable>false</enable>
+                    <disabledcolor>FFECEEF2</disabledcolor>
+                    <texturenofocus border="20" colordiffuse="FF2A303B">pill.png</texturenofocus>
+                    <texturefocus border="20" colordiffuse="FF2A303B">pill.png</texturefocus>
+                    <label>$INFO[Container(50).ListItem.Property(year)]</label>
+                    <visible>!String.IsEmpty(Container(50).ListItem.Property(year))</visible>
+                </control>
+                <control type="button">
+                    <width>auto</width>
+                    <height>40</height>
+                    <font>font12</font>
+                    <textoffsetx>18</textoffsetx>
+                    <aligny>center</aligny>
+                    <enable>false</enable>
+                    <disabledcolor>FFECEEF2</disabledcolor>
+                    <texturenofocus border="20" colordiffuse="FF2A303B">pill.png</texturenofocus>
+                    <texturefocus border="20" colordiffuse="FF2A303B">pill.png</texturefocus>
+                    <label>$INFO[Container(50).ListItem.Property(genre)]</label>
+                    <visible>!String.IsEmpty(Container(50).ListItem.Property(genre))</visible>
+                </control>
+                <control type="button">
+                    <width>auto</width>
+                    <height>40</height>
+                    <font>font12</font>
+                    <textoffsetx>18</textoffsetx>
+                    <aligny>center</aligny>
+                    <enable>false</enable>
+                    <disabledcolor>FFECEEF2</disabledcolor>
+                    <texturenofocus border="20" colordiffuse="FF2A303B">pill.png</texturenofocus>
+                    <texturefocus border="20" colordiffuse="FF2A303B">pill.png</texturefocus>
+                    <label>$INFO[Container(50).ListItem.Property(developer)]</label>
+                    <visible>!String.IsEmpty(Container(50).ListItem.Property(developer))</visible>
+                </control>
+                <control type="button">
+                    <width>auto</width>
+                    <height>40</height>
+                    <font>font12</font>
+                    <textoffsetx>18</textoffsetx>
+                    <aligny>center</aligny>
+                    <enable>false</enable>
+                    <disabledcolor>FFECEEF2</disabledcolor>
+                    <texturenofocus border="20" colordiffuse="FF2A303B">pill.png</texturenofocus>
+                    <texturefocus border="20" colordiffuse="FF2A303B">pill.png</texturefocus>
+                    <label>$INFO[Container(50).ListItem.Property(players),,P]</label>
+                    <visible>!String.IsEmpty(Container(50).ListItem.Property(players))</visible>
+                </control>
+                <control type="button">
+                    <width>auto</width>
+                    <height>40</height>
+                    <font>font12</font>
+                    <textoffsetx>18</textoffsetx>
+                    <aligny>center</aligny>
+                    <enable>false</enable>
+                    <disabledcolor>FF1A1206</disabledcolor>
+                    <texturenofocus border="20" colordiffuse="FFF2B33D">pill.png</texturenofocus>
+                    <texturefocus border="20" colordiffuse="FFF2B33D">pill.png</texturefocus>
+                    <label>★ $INFO[Container(50).ListItem.Property(rating)]</label>
+                    <visible>!String.IsEmpty(Container(50).ListItem.Property(rating))</visible>
+                </control>
             </control>
             <control type="textbox">
-                <top>104</top>
+                <top>116</top>
                 <width>878</width>
-                <height>140</height>
+                <height>136</height>
                 <font>font12</font>
                 <textcolor>FFB4BBC7</textcolor>
                 <autoscroll delay="6000" time="3000" repeat="8000">true</autoscroll>

@@ -165,3 +165,7 @@ msgstr "停留片刻自动播放预告"
 msgctxt "#30339"
 msgid "OK: play    Info / Menu: details    Back: up a level"
 msgstr "确认：开始游戏    信息 / 菜单键：详情    返回：上一级"
+
+msgctxt "#30340"
+msgid "No screenshot"
+msgstr "暂无截图"

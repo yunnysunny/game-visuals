@@ -165,3 +165,7 @@ msgstr "Trailer plays after a moment"
 msgctxt "#30339"
 msgid "OK: play    Info / Menu: details    Back: up a level"
 msgstr "OK: play    Info / Menu: details    Back: up a level"
+
+msgctxt "#30340"
+msgid "No screenshot"
+msgstr "No screenshot"

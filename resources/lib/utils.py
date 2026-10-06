@@ -3,9 +3,16 @@ import xbmcgui
 import os
 import xml.etree.ElementTree as ET
 import zipfile
+import zlib
 import xbmcvfs
 
 from .constants import ROM_DIR_INFO, ZIPPED_ROM_DIRNAMES
+
+CARD_COLOR_COUNT = 8
+
+def card_color(media_path, name):
+    """按名称稳定地选一种卡片底色（兜底封面、卡带标签共用）"""
+    return os.path.join(media_path, f"cart_label_{zlib.crc32(name.encode('utf-8')) % CARD_COLOR_COUNT}.png")
 
 def log(msg, level=xbmc.LOGINFO):
     xbmc.log(f"[GamePoster] {msg}", level)

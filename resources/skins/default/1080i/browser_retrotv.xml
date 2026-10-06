@@ -52,7 +52,7 @@
             </control>
             <control type="image">
                 <width>896</width>
-                <height>584</height>
+                <height>540</height>
                 <aspectratio>keep</aspectratio>
                 <fadetime>200</fadetime>
                 <texture>$INFO[Container(50).ListItem.Art(fanart)]</texture>
@@ -67,9 +67,20 @@
                 <texture>$INFO[Container(50).ListItem.Art(thumb)]</texture>
                 <visible>String.IsEqual(Container(50).ListItem.Property(isfolder),true)</visible>
             </control>
-            <control type="videowindow">
+            <control type="label">
+                <left>0</left>
                 <width>896</width>
                 <height>584</height>
+                <font>font30_title</font>
+                <align>center</align>
+                <aligny>center</aligny>
+                <textcolor>FFFFD9A0</textcolor>
+                <label>[B]NO SIGNAL[/B]</label>
+                <visible>!Player.HasVideo + String.IsEmpty(Container(50).ListItem.Art(fanart)) + !String.IsEqual(Container(50).ListItem.Property(isfolder),true)</visible>
+            </control>
+            <control type="videowindow">
+                <width>896</width>
+                <height>540</height>
                 <visible>Player.HasVideo</visible>
             </control>
             <control type="image">
@@ -88,14 +99,14 @@
                 <texture>tv_screen_mask.png</texture>
             </control>
             <control type="label">
-                <left>40</left>
-                <top>28</top>
-                <width>600</width>
+                <left>72</left>
+                <top>540</top>
+                <width>752</width>
                 <height>40</height>
                 <font>font13</font>
                 <textcolor>FFFFD9A0</textcolor>
                 <shadowcolor>FF000000</shadowcolor>
-                <label>[B]PLAY  $INFO[Player.Time][/B]</label>
+                <label>[B]PLAY  $INFO[Player.Time]$INFO[Player.Duration, / ][/B]</label>
                 <visible>Player.HasVideo</visible>
             </control>
         </control>
@@ -239,7 +250,31 @@
             <width>132</width>
             <height>176</height>
             <aspectratio aligny="top">keep</aspectratio>
-            <texture>$INFO[Container(50).ListItem.Art(thumb)]</texture>
+            <texture diffuse="mask_cover.png">$INFO[Container(50).ListItem.Art(thumb)]</texture>
+            <visible>!String.IsEqual(Container(50).ListItem.Property(nocover),true)</visible>
+        </control>
+        <control type="group">
+            <left>1216</left>
+            <top>792</top>
+            <visible>String.IsEqual(Container(50).ListItem.Property(nocover),true)</visible>
+            <control type="image">
+                <width>132</width>
+                <height>176</height>
+                <texture diffuse="mask_cover.png">$INFO[Container(50).ListItem.Property(cart_label)]</texture>
+            </control>
+            <control type="image">
+                <width>132</width>
+                <height>176</height>
+                <texture diffuse="mask_cover.png">cover_pattern.png</texture>
+            </control>
+            <control type="textbox">
+                <left>9</left>
+                <top>123</top>
+                <width>114</width>
+                <height>49</height>
+                <font>font10</font>
+                <label>[B]$INFO[Container(50).ListItem.Label][/B]</label>
+            </control>
         </control>
         <control type="label">
             <left>1372</left>

@@ -47,7 +47,7 @@
                     <top>14</top>
                     <width>198</width>
                     <height>256</height>
-                    <texture colordiffuse="FF171B22">white.png</texture>
+                    <texture border="8" colordiffuse="FF171B22">round8.png</texture>
                 </control>
                 <control type="image">
                     <left>24</left>
@@ -55,7 +55,31 @@
                     <width>198</width>
                     <height>256</height>
                     <aspectratio>keep</aspectratio>
-                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    <texture diffuse="mask_cover.png">$INFO[ListItem.Art(thumb)]</texture>
+                    <visible>!String.IsEqual(ListItem.Property(nocover),true)</visible>
+                </control>
+                <control type="group">
+                    <left>24</left>
+                    <top>14</top>
+                    <visible>String.IsEqual(ListItem.Property(nocover),true)</visible>
+                    <control type="image">
+                        <width>198</width>
+                        <height>256</height>
+                        <texture diffuse="mask_cover.png">$INFO[ListItem.Property(cart_label)]</texture>
+                    </control>
+                    <control type="image">
+                        <width>198</width>
+                        <height>256</height>
+                        <texture diffuse="mask_cover.png">cover_pattern.png</texture>
+                    </control>
+                    <control type="textbox">
+                        <left>14</left>
+                        <top>179</top>
+                        <width>170</width>
+                        <height>71</height>
+                        <font>font10</font>
+                        <label>[B]$INFO[ListItem.Label][/B]</label>
+                    </control>
                 </control>
                 <control type="label">
                     <left>24</left>
@@ -76,7 +100,7 @@
                         <top>8</top>
                         <width>210</width>
                         <height>268</height>
-                        <texture colordiffuse="FFF2B33D">white.png</texture>
+                        <texture border="8" colordiffuse="FFF2B33D">round8.png</texture>
                         <visible>Control.HasFocus(50)</visible>
                     </control>
                     <control type="image">
@@ -84,7 +108,7 @@
                         <top>14</top>
                         <width>198</width>
                         <height>256</height>
-                        <texture colordiffuse="FF171B22">white.png</texture>
+                        <texture border="8" colordiffuse="FF171B22">round8.png</texture>
                     </control>
                     <control type="image">
                         <left>24</left>
@@ -92,7 +116,31 @@
                         <width>198</width>
                         <height>256</height>
                         <aspectratio>keep</aspectratio>
-                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                        <texture diffuse="mask_cover.png">$INFO[ListItem.Art(thumb)]</texture>
+                        <visible>!String.IsEqual(ListItem.Property(nocover),true)</visible>
+                    </control>
+                    <control type="group">
+                        <left>24</left>
+                        <top>14</top>
+                        <visible>String.IsEqual(ListItem.Property(nocover),true)</visible>
+                        <control type="image">
+                            <width>198</width>
+                            <height>256</height>
+                            <texture diffuse="mask_cover.png">$INFO[ListItem.Property(cart_label)]</texture>
+                        </control>
+                        <control type="image">
+                            <width>198</width>
+                            <height>256</height>
+                            <texture diffuse="mask_cover.png">cover_pattern.png</texture>
+                        </control>
+                        <control type="textbox">
+                            <left>14</left>
+                            <top>179</top>
+                            <width>170</width>
+                            <height>71</height>
+                            <font>font10</font>
+                            <label>[B]$INFO[ListItem.Label][/B]</label>
+                        </control>
                     </control>
                 </control>
                 <control type="label">
@@ -115,14 +163,14 @@
             <control type="image">
                 <width>1728</width>
                 <height>256</height>
-                <texture colordiffuse="FF171B22">white.png</texture>
+                <texture border="16" colordiffuse="FF171B22">round16.png</texture>
             </control>
             <control type="image">
                 <left>22</left>
                 <top>22</top>
                 <width>376</width>
                 <height>212</height>
-                <texture colordiffuse="FF000000">white.png</texture>
+                <texture border="8" colordiffuse="FF000000">round8.png</texture>
             </control>
             <control type="image">
                 <left>22</left>
@@ -130,7 +178,7 @@
                 <width>376</width>
                 <height>212</height>
                 <aspectratio>keep</aspectratio>
-                <texture>$INFO[Container(50).ListItem.Art(fanart)]</texture>
+                <texture diffuse="mask_video.png">$INFO[Container(50).ListItem.Art(fanart)]</texture>
                 <visible>!Player.HasVideo + !String.IsEqual(Container(50).ListItem.Property(isfolder),true)</visible>
             </control>
             <control type="image">
@@ -142,6 +190,17 @@
                 <texture>$INFO[Container(50).ListItem.Art(thumb)]</texture>
                 <visible>String.IsEqual(Container(50).ListItem.Property(isfolder),true)</visible>
             </control>
+            <control type="label">
+                <left>22</left>
+                <width>376</width>
+                <height>256</height>
+                <font>font10</font>
+                <align>center</align>
+                <aligny>center</aligny>
+                <textcolor>FF5C6370</textcolor>
+                <label>$ADDON[plugin.video.game-visuals 30340]</label>
+                <visible>!Player.HasVideo + String.IsEmpty(Container(50).ListItem.Art(fanart)) + !String.IsEqual(Container(50).ListItem.Property(isfolder),true)</visible>
+            </control>
             <control type="videowindow">
                 <left>22</left>
                 <top>22</top>
@@ -150,12 +209,14 @@
                 <visible>Player.HasVideo</visible>
             </control>
             <control type="label">
-                <left>32</left>
-                <top>194</top>
-                <width>356</width>
-                <height>36</height>
+                <left>1300</left>
+                <top>208</top>
+                <width>400</width>
+                <height>30</height>
                 <font>font10</font>
-                <label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+                <align>right</align>
+                <textcolor>FFF2B33D</textcolor>
+                <label>$ADDON[plugin.video.game-visuals 30337]  $INFO[Player.Time]$INFO[Player.Duration, / ]</label>
                 <visible>Player.HasVideo</visible>
             </control>
             <control type="label">
@@ -179,7 +240,7 @@
                 <left>430</left>
                 <top>120</top>
                 <width>1270</width>
-                <height>80</height>
+                <height>60</height>
                 <font>font12</font>
                 <textcolor>FFB4BBC7</textcolor>
                 <autoscroll delay="6000" time="3000" repeat="8000">true</autoscroll>

@@ -88,22 +88,22 @@
             <top>110</top>
             <visible>Player.HasVideo | !String.IsEmpty(Container(50).ListItem.Property(trailer))</visible>
             <control type="image">
-                <left>-3</left>
-                <top>-3</top>
-                <width>726</width>
-                <height>411</height>
-                <texture colordiffuse="40FFFFFF">white.png</texture>
+                <left>-24</left>
+                <top>-24</top>
+                <width>768</width>
+                <height>503</height>
+                <texture border="40">shadow.png</texture>
             </control>
             <control type="image">
                 <width>720</width>
-                <height>405</height>
-                <texture colordiffuse="FF000000">white.png</texture>
+                <height>455</height>
+                <texture border="16" colordiffuse="FF000000">round16.png</texture>
             </control>
             <control type="image">
                 <width>720</width>
                 <height>405</height>
                 <aspectratio>keep</aspectratio>
-                <texture>$INFO[Container(50).ListItem.Art(fanart)]</texture>
+                <texture diffuse="mask_video.png">$INFO[Container(50).ListItem.Art(fanart)]</texture>
                 <visible>!Player.HasVideo</visible>
             </control>
             <control type="videowindow">
@@ -112,14 +112,15 @@
                 <visible>Player.HasVideo</visible>
             </control>
             <control type="image">
-                <top>355</top>
-                <width>720</width>
-                <height>50</height>
-                <texture colordiffuse="C0000000">white.png</texture>
+                <left>18</left>
+                <top>405</top>
+                <width>684</width>
+                <height>1</height>
+                <texture colordiffuse="30FFFFFF">white.png</texture>
             </control>
             <control type="label">
                 <left>18</left>
-                <top>355</top>
+                <top>405</top>
                 <width>684</width>
                 <height>50</height>
                 <font>font12</font>
@@ -128,7 +129,7 @@
             </control>
             <control type="label">
                 <left>18</left>
-                <top>355</top>
+                <top>405</top>
                 <width>684</width>
                 <height>50</height>
                 <font>font12</font>
@@ -162,21 +163,45 @@
                     <top>64</top>
                     <width>168</width>
                     <height>224</height>
-                    <texture colordiffuse="FF171B22">white.png</texture>
+                    <texture border="8" colordiffuse="FF171B22">round8.png</texture>
                 </control>
                 <control type="image">
                     <top>64</top>
                     <width>168</width>
                     <height>224</height>
                     <aspectratio>keep</aspectratio>
-                    <texture colordiffuse="C8FFFFFF">$INFO[ListItem.Art(thumb)]</texture>
+                    <texture colordiffuse="C8FFFFFF" diffuse="mask_cover.png">$INFO[ListItem.Art(thumb)]</texture>
+                    <visible>!String.IsEqual(ListItem.Property(nocover),true)</visible>
+                </control>
+                <control type="group">
+                    <left>0</left>
+                    <top>64</top>
+                    <visible>String.IsEqual(ListItem.Property(nocover),true)</visible>
+                    <control type="image">
+                        <width>168</width>
+                        <height>224</height>
+                        <texture diffuse="mask_cover.png">$INFO[ListItem.Property(cart_label)]</texture>
+                    </control>
+                    <control type="image">
+                        <width>168</width>
+                        <height>224</height>
+                        <texture diffuse="mask_cover.png">cover_pattern.png</texture>
+                    </control>
+                    <control type="textbox">
+                        <left>12</left>
+                        <top>156</top>
+                        <width>144</width>
+                        <height>62</height>
+                        <font>font10</font>
+                        <label>[B]$INFO[ListItem.Label][/B]</label>
+                    </control>
                 </control>
             </itemlayout>
             <focusedlayout width="252" height="300">
                 <control type="image">
                     <width>238</width>
                     <height>300</height>
-                    <texture colordiffuse="FFF2B33D">white.png</texture>
+                    <texture border="8" colordiffuse="FFF2B33D">round8.png</texture>
                     <visible>Control.HasFocus(50)</visible>
                 </control>
                 <control type="image">
@@ -184,7 +209,7 @@
                     <top>6</top>
                     <width>224</width>
                     <height>288</height>
-                    <texture colordiffuse="FF171B22">white.png</texture>
+                    <texture border="8" colordiffuse="FF171B22">round8.png</texture>
                 </control>
                 <control type="image">
                     <left>7</left>
@@ -192,7 +217,31 @@
                     <width>224</width>
                     <height>288</height>
                     <aspectratio>keep</aspectratio>
-                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    <texture diffuse="mask_cover.png">$INFO[ListItem.Art(thumb)]</texture>
+                    <visible>!String.IsEqual(ListItem.Property(nocover),true)</visible>
+                </control>
+                <control type="group">
+                    <left>7</left>
+                    <top>6</top>
+                    <visible>String.IsEqual(ListItem.Property(nocover),true)</visible>
+                    <control type="image">
+                        <width>224</width>
+                        <height>288</height>
+                        <texture diffuse="mask_cover.png">$INFO[ListItem.Property(cart_label)]</texture>
+                    </control>
+                    <control type="image">
+                        <width>224</width>
+                        <height>288</height>
+                        <texture diffuse="mask_cover.png">cover_pattern.png</texture>
+                    </control>
+                    <control type="textbox">
+                        <left>16</left>
+                        <top>201</top>
+                        <width>192</width>
+                        <height>80</height>
+                        <font>font12</font>
+                        <label>[B]$INFO[ListItem.Label][/B]</label>
+                    </control>
                 </control>
             </focusedlayout>
         </control>
