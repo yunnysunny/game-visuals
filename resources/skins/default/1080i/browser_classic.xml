@@ -27,6 +27,7 @@
             <width>1200</width>
             <height>60</height>
             <font>font36_title</font>
+            <aligny>center</aligny>
             <textcolor>FFF2B33D</textcolor>
             <label>$INFO[Window.Property(platform)]</label>
         </control>
@@ -36,6 +37,7 @@
             <width>420</width>
             <height>60</height>
             <font>font12</font>
+            <aligny>center</aligny>
             <align>right</align>
             <textcolor>FF9AA3B2</textcolor>
             <label>$INFO[Window.Property(count)]</label>
@@ -46,6 +48,7 @@
             <width>280</width>
             <height>60</height>
             <font>font32_title</font>
+            <aligny>center</aligny>
             <align>right</align>
             <label>$INFO[System.Time]</label>
         </control>
@@ -83,6 +86,7 @@
                     <width>520</width>
                     <height>70</height>
                     <font>font13</font>
+                    <aligny>center</aligny>
                     <textcolor>FFC9CED8</textcolor>
                     <label>$INFO[ListItem.Label]</label>
                 </control>
@@ -117,6 +121,7 @@
                     <width>520</width>
                     <height>66</height>
                     <font>font13</font>
+                    <aligny>center</aligny>
                     <textcolor>FF1A1206</textcolor>
                     <scroll>true</scroll>
                     <label>[B]$INFO[ListItem.Label][/B]</label>
@@ -187,6 +192,7 @@
                 <width>1048</width>
                 <height>48</height>
                 <font>font12</font>
+                <aligny>center</aligny>
                 <label>$ADDON[plugin.video.game-visuals 30337]  $INFO[Player.Time]$INFO[Player.Duration, / ]</label>
                 <visible>Player.HasVideo</visible>
             </control>
@@ -196,6 +202,7 @@
                 <width>1048</width>
                 <height>48</height>
                 <font>font12</font>
+                <aligny>center</aligny>
                 <textcolor>FF9AA3B2</textcolor>
                 <label>$ADDON[plugin.video.game-visuals 30338]</label>
                 <visible>!Player.HasVideo + !String.IsEmpty(Container(50).ListItem.Property(trailer))</visible>
@@ -257,6 +264,7 @@
                 <width>878</width>
                 <height>56</height>
                 <font>font37</font>
+                <aligny>center</aligny>
                 <label>[B]$INFO[Container(50).ListItem.Label][/B]</label>
             </control>
             <control type="grouplist">
@@ -346,6 +354,7 @@
                 <width>878</width>
                 <height>30</height>
                 <font>font10</font>
+                <aligny>center</aligny>
                 <textcolor>FF9AA3B2</textcolor>
                 <label>$ADDON[plugin.video.game-visuals 30339]</label>
             </control>

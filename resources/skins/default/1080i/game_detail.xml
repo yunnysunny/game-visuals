@@ -93,6 +93,7 @@
             <width>1186</width>
             <height>70</height>
             <font>font52_title</font>
+            <aligny>center</aligny>
             <textcolor>FFECEEF2</textcolor>
             <scroll>true</scroll>
             <label>$INFO[Window.Property(title)]</label>
@@ -103,6 +104,7 @@
             <width>1186</width>
             <height>36</height>
             <font>font27</font>
+            <aligny>center</aligny>
             <textcolor>FFF2B33D</textcolor>
             <label>$INFO[Window.Property(platform)]</label>
         </control>
@@ -130,6 +132,7 @@
                 <control type="label">
                     <height>30</height>
                     <font>font10</font>
+                    <aligny>center</aligny>
                     <textcolor>FF9AA3B2</textcolor>
                     <label>$ADDON[plugin.video.game-visuals 30322]</label>
                 </control>
@@ -137,6 +140,7 @@
                     <top>32</top>
                     <height>40</height>
                     <font>font27</font>
+                    <aligny>center</aligny>
                     <label>$INFO[Window.Property(year)]</label>
                 </control>
             </control>
@@ -147,6 +151,7 @@
                 <control type="label">
                     <height>30</height>
                     <font>font10</font>
+                    <aligny>center</aligny>
                     <textcolor>FF9AA3B2</textcolor>
                     <label>$ADDON[plugin.video.game-visuals 30323]</label>
                 </control>
@@ -154,6 +159,7 @@
                     <top>32</top>
                     <height>40</height>
                     <font>font27</font>
+                    <aligny>center</aligny>
                     <label>$INFO[Window.Property(genre)]</label>
                 </control>
             </control>
@@ -164,6 +170,7 @@
                 <control type="label">
                     <height>30</height>
                     <font>font10</font>
+                    <aligny>center</aligny>
                     <textcolor>FF9AA3B2</textcolor>
                     <label>$ADDON[plugin.video.game-visuals 30324]</label>
                 </control>
@@ -171,6 +178,7 @@
                     <top>32</top>
                     <height>40</height>
                     <font>font27</font>
+                    <aligny>center</aligny>
                     <label>$INFO[Window.Property(developer)]</label>
                 </control>
             </control>
@@ -181,6 +189,7 @@
                 <control type="label">
                     <height>30</height>
                     <font>font10</font>
+                    <aligny>center</aligny>
                     <textcolor>FF9AA3B2</textcolor>
                     <label>$ADDON[plugin.video.game-visuals 30325]</label>
                 </control>
@@ -188,6 +197,7 @@
                     <top>32</top>
                     <height>40</height>
                     <font>font27</font>
+                    <aligny>center</aligny>
                     <label>$INFO[Window.Property(publisher)]</label>
                 </control>
             </control>
@@ -198,6 +208,7 @@
                 <control type="label">
                     <height>30</height>
                     <font>font10</font>
+                    <aligny>center</aligny>
                     <textcolor>FF9AA3B2</textcolor>
                     <label>$ADDON[plugin.video.game-visuals 30326]</label>
                 </control>
@@ -205,6 +216,7 @@
                     <top>32</top>
                     <height>40</height>
                     <font>font27</font>
+                    <aligny>center</aligny>
                     <label>$INFO[Window.Property(players)]</label>
                 </control>
             </control>
@@ -215,6 +227,7 @@
                 <control type="label">
                     <height>30</height>
                     <font>font10</font>
+                    <aligny>center</aligny>
                     <textcolor>FF9AA3B2</textcolor>
                     <label>$ADDON[plugin.video.game-visuals 30327]</label>
                 </control>
@@ -222,6 +235,7 @@
                     <top>32</top>
                     <height>40</height>
                     <font>font27</font>
+                    <aligny>center</aligny>
                     <textcolor>FFF2B33D</textcolor>
                     <label>$INFO[Window.Property(rating)]</label>
                 </control>
@@ -283,6 +297,7 @@
                 <width>672</width>
                 <height>32</height>
                 <font>font10</font>
+                <aligny>center</aligny>
                 <label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
                 <visible>Player.HasVideo</visible>
             </control>
@@ -292,6 +307,7 @@
                 <width>672</width>
                 <height>32</height>
                 <font>font10</font>
+                <aligny>center</aligny>
                 <textcolor>FF9AA3B2</textcolor>
                 <label>$ADDON[plugin.video.game-visuals 30328]</label>
                 <visible>String.IsEmpty(Window.Property(trailer))</visible>
@@ -305,6 +321,7 @@
             <width>450</width>
             <height>36</height>
             <font>font12</font>
+            <aligny>center</aligny>
             <textcolor>FF9AA3B2</textcolor>
             <label>$ADDON[plugin.video.game-visuals 30321]</label>
         </control>

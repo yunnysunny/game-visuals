@@ -40,6 +40,7 @@
             <width>1100</width>
             <height>44</height>
             <font>font27</font>
+            <aligny>center</aligny>
             <textcolor>FFF2B33D</textcolor>
             <label>[B]$INFO[Window.Property(platform)][/B]</label>
         </control>
@@ -60,6 +61,7 @@
                 <width>900</width>
                 <height>40</height>
                 <font>font13</font>
+                <aligny>center</aligny>
                 <textcolor>FFC9CED8</textcolor>
                 <label>$INFO[Container(50).ListItem.Property(year)]$INFO[Container(50).ListItem.Property(genre), · ]$INFO[Container(50).ListItem.Property(developer), · ]$INFO[Container(50).ListItem.Property(rating), · ★ ]</label>
             </control>
@@ -77,6 +79,7 @@
                 <width>900</width>
                 <height>36</height>
                 <font>font12</font>
+                <aligny>center</aligny>
                 <textcolor>FF9AA3B2</textcolor>
                 <label>$ADDON[plugin.video.game-visuals 30339]</label>
             </control>
@@ -124,6 +127,7 @@
                 <width>684</width>
                 <height>50</height>
                 <font>font12</font>
+                <aligny>center</aligny>
                 <label>$ADDON[plugin.video.game-visuals 30337]  $INFO[Player.Time]$INFO[Player.Duration, / ]</label>
                 <visible>Player.HasVideo</visible>
             </control>
@@ -133,6 +137,7 @@
                 <width>684</width>
                 <height>50</height>
                 <font>font12</font>
+                <aligny>center</aligny>
                 <textcolor>FF9AA3B2</textcolor>
                 <label>$ADDON[plugin.video.game-visuals 30338]</label>
                 <visible>!Player.HasVideo</visible>
@@ -146,6 +151,7 @@
             <width>800</width>
             <height>40</height>
             <font>font12</font>
+            <aligny>center</aligny>
             <textcolor>FF9AA3B2</textcolor>
             <label>$INFO[Window.Property(count)]   [COLOR FFECEEF2]$INFO[Container(50).CurrentItem] / $INFO[Container(50).NumItems][/COLOR]</label>
         </control>
