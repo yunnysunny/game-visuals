@@ -73,3 +73,99 @@ msgstr "已删除"
 msgctxt "#30316"
 msgid "invalid ROM"
 msgstr "无效的 ROM"
+
+msgctxt "#30317"
+msgid "Game details"
+msgstr "游戏详情"
+
+msgctxt "#30318"
+msgid "Play game"
+msgstr "开始游戏"
+
+msgctxt "#30319"
+msgid "Fullscreen trailer"
+msgstr "全屏预告"
+
+msgctxt "#30320"
+msgid "Back"
+msgstr "返回"
+
+msgctxt "#30321"
+msgid "Plot"
+msgstr "简介"
+
+msgctxt "#30322"
+msgid "Year"
+msgstr "年份"
+
+msgctxt "#30323"
+msgid "Genre"
+msgstr "类型"
+
+msgctxt "#30324"
+msgid "Developer"
+msgstr "开发商"
+
+msgctxt "#30325"
+msgid "Publisher"
+msgstr "发行商"
+
+msgctxt "#30326"
+msgid "Players"
+msgstr "人数"
+
+msgctxt "#30327"
+msgid "Rating"
+msgstr "评分"
+
+msgctxt "#30328"
+msgid "No trailer"
+msgstr "暂无预告片"
+
+msgctxt "#30329"
+msgid "No more details"
+msgstr "暂无更多信息"
+
+msgctxt "#30330"
+msgid "Browse layout"
+msgstr "浏览布局"
+
+msgctxt "#30331"
+msgid "Kodi default list"
+msgstr "Kodi 默认列表"
+
+msgctxt "#30332"
+msgid "A: Classic two-column"
+msgstr "A：经典双栏"
+
+msgctxt "#30333"
+msgid "B: Immersive hero"
+msgstr "B：沉浸式大图"
+
+msgctxt "#30334"
+msgid "C: Poster wall"
+msgstr "C：海报墙"
+
+msgctxt "#30335"
+msgid "D: Retro TV"
+msgstr "D：复古电视"
+
+msgctxt "#30336"
+msgid "{} games"
+msgstr "{} 款游戏"
+
+msgctxt "#30337"
+msgid "Trailer"
+msgstr "预告片"
+
+msgctxt "#30338"
+msgid "Trailer plays after a moment"
+msgstr "停留片刻自动播放预告"
+
+msgctxt "#30339"
+msgid "OK: play    Info / Menu: details    Back: up a level"
+msgstr "确认：开始游戏    信息 / 菜单键：详情    返回：上一级"
+
+msgctxt "#30340"
+msgid "No screenshot"
+msgstr "暂无截图"

@@ -1,8 +1,8 @@
 import os
 import urllib.parse
 
-from .utils import extract_rom, get_game_info, log
-from .constants import ROM_EXTENSIONS, MEDIA_FOLDERS, ROM_DIR_INFO, ZIPPED_ROM_DIRNAMES
+from .utils import get_game_info, log, play_rom as play_rom_file
+from .constants import ROM_EXTENSIONS, MEDIA_FOLDERS, ROM_DIR_INFO
 import xbmc
 import xbmcgui
 import xbmcplugin
@@ -34,18 +34,8 @@ class GameDirectoryPlugin:
         if play_rom:
             # ✅ 关键：调用 PlayMedia，让 RetroPlayer 自动接管
             # Kodi 会自动识别 .nes/.zip 等格式，并用已配置的核心播放
-            log(f"Playing ROM via RetroPlayer: {play_rom}", xbmc.LOGINFO)
             rom_dirname = self.args.get("rom_dirname", [None])[0]
-            play_path = play_rom or ""
-            if rom_dirname in ZIPPED_ROM_DIRNAMES and play_rom.endswith('.zip'):
-                rom_dir_info = ROM_DIR_INFO.get(rom_dirname)
-                if rom_dir_info and rom_dir_info["extensions"] and len(rom_dir_info["extensions"]) > 0:
-                    # 创建列表副本，避免修改原始数据
-                    ext_list = rom_dir_info["extensions"][:]  # 或者使用 list(rom_dir_info["extensions"])
-                    ext_list.remove('.zip')                   # 原地移除 .zip
-                    rom_exts = tuple(ext_list)                # 转为元组
-                    play_path = extract_rom(play_rom, rom_exts)
-            if not play_path:
+            if not play_rom_file(play_rom, play_title, rom_dirname):
                 xbmcgui.Dialog().notification(
                     play_title,
                     self.addon.getLocalizedString(30316),
@@ -53,12 +43,6 @@ class GameDirectoryPlugin:
                     3000
                 )
                 return
-            li = xbmcgui.ListItem(play_title)
-            li.setPath(play_rom)   # 明确告诉 ListItem 代表哪个文件
-            li.setInfo('game', {
-                'title': play_title
-            })
-            xbmc.Player().play(play_path, li)
             xbmcplugin.endOfDirectory(self.handle, succeeded=True, cacheToDisc=False)  # ✅ 必须收尾
     def open_action(self):
         selected_dir = self.args.get("dir", [None])[0]
@@ -69,11 +53,13 @@ class GameDirectoryPlugin:
                 xbmcgui.Dialog().ok(tip, tip_msg)
                 xbmcplugin.endOfDirectory(self.handle, succeeded=False)
                 return
-            use_two_column = self.addon.getSettingBool("use_two_column_view")
-            if use_two_column:
-                # 使用正确的 RunScript 调用方式
+            layout = self.addon.getSettingInt("browse_layout")
+            if layout:
+                # 自定义布局在独立窗口中打开，当前插件目录保持不变
                 addon_id = self.addon.getAddonInfo("id")
-                xbmc.executebuiltin(f'RunScript({addon_id}, dir={urllib.parse.quote_plus(selected_dir)})')
+                browse_args = urllib.parse.urlencode({"action": "browse", "dir": selected_dir, "layout": layout})
+                xbmc.executebuiltin(f'RunScript({addon_id}, {browse_args})')
+                xbmcplugin.endOfDirectory(self.handle, succeeded=False)
             else:
                 rom_dirname = self.args.get("rom_dirname", [None])[0]
                 self.list_games_in_directory(selected_dir, rom_dirname)
@@ -256,6 +242,16 @@ class GameDirectoryPlugin:
 
                 # ✅ 关键修改：不直接播放 ROM，而是绑定一个 “虚拟 URL” 用于点击后触发 RetroPlayer
                 # 使用 plugin:// 协议构造一个“跳转指令”，避免 Kodi 尝试解码 .nes
+                detail_args = urllib.parse.urlencode({
+                    "action": "detail",
+                    "dir": directory,
+                    "file": file,
+                    "rom_dirname": rom_dirname or "",
+                })
+                li.addContextMenuItems([
+                    (self.addon.getLocalizedString(30317), f"RunScript({self.addon.getAddonInfo('id')}, {detail_args})")
+                ])
+
                 play_url = f"{self.base_url}?play={full_path}&title={meta['title']}&action=play&rom_dirname={rom_dirname}"
                 log(f"Adding playable item: {file}", level=xbmc.LOGINFO)
                 xbmcplugin.addDirectoryItem(

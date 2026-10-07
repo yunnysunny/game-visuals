@@ -74,4 +74,98 @@ msgctxt "#30316"
 msgid "invalid ROM"
 msgstr "invalid ROM"
 
+msgctxt "#30317"
+msgid "Game details"
+msgstr "Game details"
 
+msgctxt "#30318"
+msgid "Play game"
+msgstr "Play game"
+
+msgctxt "#30319"
+msgid "Fullscreen trailer"
+msgstr "Fullscreen trailer"
+
+msgctxt "#30320"
+msgid "Back"
+msgstr "Back"
+
+msgctxt "#30321"
+msgid "Plot"
+msgstr "Plot"
+
+msgctxt "#30322"
+msgid "Year"
+msgstr "Year"
+
+msgctxt "#30323"
+msgid "Genre"
+msgstr "Genre"
+
+msgctxt "#30324"
+msgid "Developer"
+msgstr "Developer"
+
+msgctxt "#30325"
+msgid "Publisher"
+msgstr "Publisher"
+
+msgctxt "#30326"
+msgid "Players"
+msgstr "Players"
+
+msgctxt "#30327"
+msgid "Rating"
+msgstr "Rating"
+
+msgctxt "#30328"
+msgid "No trailer"
+msgstr "No trailer"
+
+msgctxt "#30329"
+msgid "No more details"
+msgstr "No more details"
+
+msgctxt "#30330"
+msgid "Browse layout"
+msgstr "Browse layout"
+
+msgctxt "#30331"
+msgid "Kodi default list"
+msgstr "Kodi default list"
+
+msgctxt "#30332"
+msgid "A: Classic two-column"
+msgstr "A: Classic two-column"
+
+msgctxt "#30333"
+msgid "B: Immersive hero"
+msgstr "B: Immersive hero"
+
+msgctxt "#30334"
+msgid "C: Poster wall"
+msgstr "C: Poster wall"
+
+msgctxt "#30335"
+msgid "D: Retro TV"
+msgstr "D: Retro TV"
+
+msgctxt "#30336"
+msgid "{} games"
+msgstr "{} games"
+
+msgctxt "#30337"
+msgid "Trailer"
+msgstr "Trailer"
+
+msgctxt "#30338"
+msgid "Trailer plays after a moment"
+msgstr "Trailer plays after a moment"
+
+msgctxt "#30339"
+msgid "OK: play    Info / Menu: details    Back: up a level"
+msgstr "OK: play    Info / Menu: details    Back: up a level"
+
+msgctxt "#30340"
+msgid "No screenshot"
+msgstr "No screenshot"

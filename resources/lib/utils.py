@@ -1,9 +1,18 @@
 import xbmc
-# import xbmcgui
+import xbmcgui
 import os
 import xml.etree.ElementTree as ET
 import zipfile
+import zlib
 import xbmcvfs
+
+from .constants import ROM_DIR_INFO, ZIPPED_ROM_DIRNAMES
+
+CARD_COLOR_COUNT = 8
+
+def card_color(media_path, name):
+    """按名称稳定地选一种卡片底色（兜底封面、卡带标签共用）"""
+    return os.path.join(media_path, f"cart_label_{zlib.crc32(name.encode('utf-8')) % CARD_COLOR_COUNT}.png")
 
 def log(msg, level=xbmc.LOGINFO):
     xbmc.log(f"[GamePoster] {msg}", level)
@@ -29,6 +38,9 @@ def get_game_info(directory):
                 trailer = g.findtext("video", None)
                 release_date = g.findtext("releasedate", "")
                 genre = g.findtext("genre", "")
+                developer = g.findtext("developer", "")
+                publisher = g.findtext("publisher", "")
+                players = g.findtext("players", "")
                 year = 0
                 rating = g.findtext("rating", 0)
                 if thumb:
@@ -61,6 +73,9 @@ def get_game_info(directory):
                     "fanart": fanart,
                     "trailer": trailer,
                     "genre": genre,
+                    "developer": developer,
+                    "publisher": publisher,
+                    "players": players,
                     "year": year,
                     "rating": rating,
                 }
@@ -88,3 +103,22 @@ def extract_rom(zip_path, file_exts):
         zf.extract(file, extract_dir)
 
     return os.path.join(extract_dir, file_list[0])  # 返回第一个解压的文件路径
+
+def play_rom(rom_path, title, rom_dirname=None):
+    """通过 RetroPlayer 启动 ROM，zip 包会先解压；ROM 无效时返回 False"""
+    log(f"Playing ROM via RetroPlayer: {rom_path}", xbmc.LOGINFO)
+    play_path = rom_path or ""
+    if rom_dirname in ZIPPED_ROM_DIRNAMES and rom_path.endswith('.zip'):
+        rom_dir_info = ROM_DIR_INFO.get(rom_dirname)
+        if rom_dir_info and rom_dir_info["extensions"] and len(rom_dir_info["extensions"]) > 0:
+            # 创建列表副本，避免修改原始数据
+            ext_list = rom_dir_info["extensions"][:]
+            ext_list.remove('.zip')
+            play_path = extract_rom(rom_path, tuple(ext_list))
+    if not play_path:
+        return False
+    li = xbmcgui.ListItem(title)
+    li.setPath(rom_path)   # 明确告诉 ListItem 代表哪个文件
+    li.getGameInfoTag().setTitle(title)
+    xbmc.Player().play(play_path, li)
+    return True

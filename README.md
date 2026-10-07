@@ -13,6 +13,7 @@ While using Kodi as a home entertainment center, I found that it lacked an add-o
 ## Features
 
 * Supports direct use of RecalBox’s **gamelist.xml** file without extra configuration, see [here](docs/wiki/en/gamelist-usage.md) for more details.
+* Provides a game details screen and four custom browse layouts with automatic trailer playback, see the [User Manual](docs/wiki/en/user-manual.md).
 * Automatically detects games in ROM folders and displays the corresponding visual resources.
 * Thanks to Kodi’s view-switching functionality, it offers multiple view modes so users can choose their preferred browsing style. Click the **Options** button in the bottom-left corner and select a **Viewtype** mode from the popup menu.
 
@@ -20,7 +21,7 @@ While using Kodi as a home entertainment center, I found that it lacked an add-o
 
 ## Known Issues
 
-- **Preview Videos:** Cannot be played due to limitations in Kodi’s layout files, which do not provide a dedicated area for video previews.
+- ~~**Preview Videos:** Cannot be played due to limitations in Kodi’s layout files, which do not provide a dedicated area for video previews.~~ Use a custom browse layout or the game details screen to play trailers.
 
 - ~~**ZIP SNES ROMs:** SNES ROMs compressed in .zip format cannot be launched directly. Kodi’s built-in RetroPlayer treats zipped ROMs as arcade ROMs, so they must be extracted before use.~~
 

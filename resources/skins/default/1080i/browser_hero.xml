@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 布局 B：沉浸式大图。数据由 resources/lib/browser_window.py 填充 -->
+<window>
+    <defaultcontrol always="true">50</defaultcontrol>
+    <controls>
+        <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>1920</width>
+            <height>1080</height>
+            <texture colordiffuse="FF0E1116">white.png</texture>
+        </control>
+        <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>1920</width>
+            <height>1080</height>
+            <aspectratio>scale</aspectratio>
+            <fadetime>400</fadetime>
+            <texture>$INFO[Container(50).ListItem.Art(fanart)]</texture>
+        </control>
+        <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>1920</width>
+            <height>1080</height>
+            <texture colordiffuse="FF0E1116">grad_left.png</texture>
+        </control>
+        <control type="image">
+            <left>0</left>
+            <top>560</top>
+            <width>1920</width>
+            <height>520</height>
+            <texture colordiffuse="FF0E1116">grad_bottom.png</texture>
+        </control>
+
+        <control type="label">
+            <left>96</left>
+            <top>56</top>
+            <width>1100</width>
+            <height>44</height>
+            <font>font27</font>
+            <aligny>center</aligny>
+            <textcolor>FFF2B33D</textcolor>
+            <label>[B]$INFO[Window.Property(platform)][/B]</label>
+        </control>
+
+        <!-- 标题 + 信息 -->
+        <control type="group">
+            <left>96</left>
+            <top>130</top>
+            <control type="textbox">
+                <width>900</width>
+                <height>170</height>
+                <font>font60</font>
+                <aligny>bottom</aligny>
+                <label>[B]$INFO[Container(50).ListItem.Label][/B]</label>
+            </control>
+            <control type="label">
+                <top>184</top>
+                <width>900</width>
+                <height>40</height>
+                <font>font13</font>
+                <aligny>center</aligny>
+                <textcolor>FFC9CED8</textcolor>
+                <label>$INFO[Container(50).ListItem.Property(year)]$INFO[Container(50).ListItem.Property(genre), · ]$INFO[Container(50).ListItem.Property(developer), · ]$INFO[Container(50).ListItem.Property(rating), · ★ ]</label>
+            </control>
+            <control type="textbox">
+                <top>240</top>
+                <width>800</width>
+                <height>190</height>
+                <font>font13</font>
+                <textcolor>FFB4BBC7</textcolor>
+                <autoscroll delay="6000" time="3000" repeat="8000">true</autoscroll>
+                <label>$INFO[Container(50).ListItem.Property(plot)]</label>
+            </control>
+            <control type="label">
+                <top>450</top>
+                <width>900</width>
+                <height>36</height>
+                <font>font12</font>
+                <aligny>center</aligny>
+                <textcolor>FF9AA3B2</textcolor>
+                <label>$ADDON[plugin.video.game-visuals 30339]</label>
+            </control>
+        </control>
+
+        <!-- 预告片小窗：有预告片或正在播放时才显示 -->
+        <control type="group">
+            <left>1104</left>
+            <top>110</top>
+            <visible>Player.HasVideo | !String.IsEmpty(Container(50).ListItem.Property(trailer))</visible>
+            <control type="image">
+                <left>-24</left>
+                <top>-24</top>
+                <width>768</width>
+                <height>503</height>
+                <texture border="40">shadow.png</texture>
+            </control>
+            <control type="image">
+                <width>720</width>
+                <height>455</height>
+                <texture border="16" colordiffuse="FF000000">round16.png</texture>
+            </control>
+            <control type="image">
+                <width>720</width>
+                <height>405</height>
+                <aspectratio>keep</aspectratio>
+                <texture diffuse="mask_video.png">$INFO[Container(50).ListItem.Art(fanart)]</texture>
+                <visible>!Player.HasVideo</visible>
+            </control>
+            <control type="videowindow">
+                <width>720</width>
+                <height>405</height>
+                <visible>Player.HasVideo</visible>
+            </control>
+            <control type="image">
+                <left>18</left>
+                <top>405</top>
+                <width>684</width>
+                <height>1</height>
+                <texture colordiffuse="30FFFFFF">white.png</texture>
+            </control>
+            <control type="label">
+                <left>18</left>
+                <top>405</top>
+                <width>684</width>
+                <height>50</height>
+                <font>font12</font>
+                <aligny>center</aligny>
+                <label>$ADDON[plugin.video.game-visuals 30337]  $INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+                <visible>Player.HasVideo</visible>
+            </control>
+            <control type="label">
+                <left>18</left>
+                <top>405</top>
+                <width>684</width>
+                <height>50</height>
+                <font>font12</font>
+                <aligny>center</aligny>
+                <textcolor>FF9AA3B2</textcolor>
+                <label>$ADDON[plugin.video.game-visuals 30338]</label>
+                <visible>!Player.HasVideo</visible>
+            </control>
+        </control>
+
+        <!-- 底部横向封面轮播 -->
+        <control type="label">
+            <left>96</left>
+            <top>700</top>
+            <width>800</width>
+            <height>40</height>
+            <font>font12</font>
+            <aligny>center</aligny>
+            <textcolor>FF9AA3B2</textcolor>
+            <label>$INFO[Window.Property(count)]   [COLOR FFECEEF2]$INFO[Container(50).CurrentItem] / $INFO[Container(50).NumItems][/COLOR]</label>
+        </control>
+        <control type="list" id="50">
+            <left>96</left>
+            <top>752</top>
+            <width>1824</width>
+            <height>300</height>
+            <orientation>horizontal</orientation>
+            <onup>noop</onup>
+            <ondown>noop</ondown>
+            <scrolltime tween="quadratic">250</scrolltime>
+            <itemlayout width="196" height="300">
+                <control type="image">
+                    <top>64</top>
+                    <width>168</width>
+                    <height>224</height>
+                    <texture border="8" colordiffuse="FF171B22">round8.png</texture>
+                </control>
+                <control type="image">
+                    <top>64</top>
+                    <width>168</width>
+                    <height>224</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture colordiffuse="C8FFFFFF" diffuse="mask_cover.png">$INFO[ListItem.Art(thumb)]</texture>
+                    <visible>!String.IsEqual(ListItem.Property(nocover),true)</visible>
+                </control>
+                <control type="group">
+                    <left>0</left>
+                    <top>64</top>
+                    <visible>String.IsEqual(ListItem.Property(nocover),true)</visible>
+                    <control type="image">
+                        <width>168</width>
+                        <height>224</height>
+                        <texture diffuse="mask_cover.png">$INFO[ListItem.Property(cart_label)]</texture>
+                    </control>
+                    <control type="image">
+                        <width>168</width>
+                        <height>224</height>
+                        <texture diffuse="mask_cover.png">cover_pattern.png</texture>
+                    </control>
+                    <control type="textbox">
+                        <left>12</left>
+                        <top>156</top>
+                        <width>144</width>
+                        <height>62</height>
+                        <font>font10</font>
+                        <label>[B]$INFO[ListItem.Label][/B]</label>
+                    </control>
+                </control>
+            </itemlayout>
+            <focusedlayout width="252" height="300">
+                <control type="image">
+                    <width>238</width>
+                    <height>300</height>
+                    <texture border="8" colordiffuse="FFF2B33D">round8.png</texture>
+                    <visible>Control.HasFocus(50)</visible>
+                </control>
+                <control type="image">
+                    <left>7</left>
+                    <top>6</top>
+                    <width>224</width>
+                    <height>288</height>
+                    <texture border="8" colordiffuse="FF171B22">round8.png</texture>
+                </control>
+                <control type="image">
+                    <left>7</left>
+                    <top>6</top>
+                    <width>224</width>
+                    <height>288</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture diffuse="mask_cover.png">$INFO[ListItem.Art(thumb)]</texture>
+                    <visible>!String.IsEqual(ListItem.Property(nocover),true)</visible>
+                </control>
+                <control type="group">
+                    <left>7</left>
+                    <top>6</top>
+                    <visible>String.IsEqual(ListItem.Property(nocover),true)</visible>
+                    <control type="image">
+                        <width>224</width>
+                        <height>288</height>
+                        <texture diffuse="mask_cover.png">$INFO[ListItem.Property(cart_label)]</texture>
+                    </control>
+                    <control type="image">
+                        <width>224</width>
+                        <height>288</height>
+                        <texture diffuse="mask_cover.png">cover_pattern.png</texture>
+                    </control>
+                    <control type="textbox">
+                        <left>16</left>
+                        <top>201</top>
+                        <width>192</width>
+                        <height>80</height>
+                        <font>font12</font>
+                        <label>[B]$INFO[ListItem.Label][/B]</label>
+                    </control>
+                </control>
+            </focusedlayout>
+        </control>
+    </controls>
+</window>
