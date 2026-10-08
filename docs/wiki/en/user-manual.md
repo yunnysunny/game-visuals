@@ -118,7 +118,7 @@ Trailers and screenshots play on the screen of a retro TV with scanlines, and th
 
 ### Browsing multi-platform folders
 
-If you added a root folder that contains one sub-folder per platform, the layout first lists the platform folders with their logos and descriptions. Press OK to open a folder and Back to go up again.
+If you added a root folder that contains one sub-folder per platform, the platform folders are listed in Kodi's own view with their logos and descriptions. The layout opens only when you enter a folder that contains games; press Back there to return to the platform list.
 
 ![Platform folders](images/user-manual/folder.jpg)
 

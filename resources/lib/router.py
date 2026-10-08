@@ -54,15 +54,32 @@ class GameDirectoryPlugin:
                 xbmcplugin.endOfDirectory(self.handle, succeeded=False)
                 return
             layout = self.addon.getSettingInt("browse_layout")
-            if layout:
+            # 平台目录（只有子文件夹、没有 ROM）始终使用 Kodi 原生列表，只有游戏目录才打开自定义布局
+            if layout and self.has_rom_file(selected_dir):
                 # 自定义布局在独立窗口中打开，当前插件目录保持不变
-                addon_id = self.addon.getAddonInfo("id")
-                browse_args = urllib.parse.urlencode({"action": "browse", "dir": selected_dir, "layout": layout})
-                xbmc.executebuiltin(f'RunScript({addon_id}, {browse_args})')
+                self.run_browser(selected_dir, layout)
                 xbmcplugin.endOfDirectory(self.handle, succeeded=False)
             else:
                 rom_dirname = self.args.get("rom_dirname", [None])[0]
                 self.list_games_in_directory(selected_dir, rom_dirname)
+    def browse_action(self):
+        """非文件夹列表项触发：直接打开自定义布局窗口，不经过 endOfDirectory"""
+        selected_dir = self.args.get("dir", [None])[0]
+        if selected_dir:
+            self.run_browser(selected_dir, self.addon.getSettingInt("browse_layout") or 1)
+    def run_browser(self, directory, layout):
+        addon_id = self.addon.getAddonInfo("id")
+        browse_args = urllib.parse.urlencode({"action": "browse", "dir": directory, "layout": layout})
+        xbmc.executebuiltin(f'RunScript({addon_id}, {browse_args})')
+    def has_rom_file(self, directory):
+        try:
+            return any(
+                name.lower().endswith(ROM_EXTENSIONS) and os.path.isfile(os.path.join(directory, name))
+                for name in os.listdir(directory)
+            )
+        except OSError as e:
+            log(f"Error reading directory {directory}: {e}", level=xbmc.LOGWARNING)
+            return False
     def get_rom_dirs(self):
         rom_dirs_str = self.addon.getSetting("rom_dirs")
         rom_dirs = [d.strip() for d in rom_dirs_str.split("|") if d.strip()]
@@ -107,6 +124,9 @@ class GameDirectoryPlugin:
         # 2. 打开指定目录
         if action == 'open':
             self.open_action()
+            return
+        if action == 'browse':
+            self.browse_action()
             return
         if action == 'add':
             self.add_action()
@@ -158,6 +178,7 @@ class GameDirectoryPlugin:
         default_fanart = self.addon.getAddonInfo('fanart')
 
         lang = xbmc.getLanguage(xbmc.ISO_639_1)
+        layout = self.addon.getSettingInt("browse_layout")
         hasRomFile = False
         for file in os.listdir(directory):
             full_path = os.path.join(directory, file)
@@ -195,8 +216,14 @@ class GameDirectoryPlugin:
                         'thumb': default_logo,
                     })
 
-                url = f"{self.base_url}?dir={urllib.parse.quote_plus(full_path)}&action=open&rom_dirname={file.lower()}"
-                xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=True)
+                if layout and self.has_rom_file(full_path):
+                    # 游戏目录用非文件夹项直接打开自定义布局。若作为文件夹打开再返回失败，
+                    # Kodi 会刷新当前列表并显示忙碌对话框，导致布局窗口被拒绝激活
+                    url = f"{self.base_url}?dir={urllib.parse.quote_plus(full_path)}&action=browse"
+                    xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=False)
+                else:
+                    url = f"{self.base_url}?dir={urllib.parse.quote_plus(full_path)}&action=open&rom_dirname={file.lower()}"
+                    xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=True)
                 continue
             if os.path.isfile(full_path):
                 if not file.lower().endswith(ROM_EXTENSIONS):
