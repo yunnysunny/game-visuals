@@ -1,3 +1,14 @@
+## v0.8.0
+### Add
+1. Add game detail window with trailer playback, opened from the context menu.
+2. Add custom browse layouts: A: Classic two-column, B: Immersive hero, C: Poster wall, D: Retro TV.
+3. Play trailers in the browse layouts after a game stays selected for a moment.
+4. Show a colored fallback card for games without cover or screenshot.
+5. Add user manual in English and Chinese.
+
+### Fix
+1. Platform folders are listed in Kodi's own view; custom layouts open only for game folders.
+
 ## v0.6.0
 ### Add
 1. Add support for separate fanart and thumbnail.
