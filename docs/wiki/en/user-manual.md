@@ -42,7 +42,7 @@ On Kodi's **Add-ons** screen, select Game Visuals, open the context menu and cho
 
 | Setting | Description |
 |---|---|
-| Browse layout | The screen used when you open a game folder: **Kodi default list**, **A: Classic two-column**, **B: Immersive hero**, **C: Poster wall** or **D: Retro TV**. See below. The default is Kodi default list. |
+| Browse layout | The screen used when you open a game folder: **A: Classic two-column**, **B: Immersive hero**, **C: Poster wall**, **D: Retro TV** or **Kodi default list**. See below. The default is A: Classic two-column. |
 | Skip media folders | Hides these folders from the lists: artwork and BIOS folders such as `images`, `videos`, `media` and `bios`; PC port folders such as `ports` and `ports3`; hidden folders whose names start with `.`; and folders that contain no ROMs (for example an `fbneo` folder holding only emulator saves). Keep this on. |
 
 Whether or not **Skip media folders** is on, these files are never listed as games:
