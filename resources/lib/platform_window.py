@@ -34,6 +34,14 @@ def list_media(directory, exts):
         return []
 
 
+def read_media(path):
+    """读取平台的截图和视频目录，U 盘上较慢，所以第一次停在这个平台上时才读"""
+    images_dir = os.path.join(path, "images")
+    # 有的 gamelist 把预览视频也放在 images 目录里（xxx-video.mp4）
+    return (list_media(images_dir, IMAGE_EXTS),
+            list_media(os.path.join(path, "videos"), VIDEO_EXTS) or list_media(images_dir, VIDEO_EXTS))
+
+
 def pick_screenshot(images):
     """ES 风格的 images 目录里同时有截图、封面和标题图，优先用截图"""
     shots = [p for p in images if any(k in os.path.basename(p).lower() for k in ("-image", "screenshot", "snap"))]
@@ -64,6 +72,9 @@ class PlatformWindow(xbmcgui.WindowXML):
         self.tabs = self.getControl(CONTROL_TABS)
         if not self.platforms:
             self.platforms = self.scan()
+            if self.platforms is None:
+                self.exit()
+                return
             if not self.platforms:
                 xbmcgui.Dialog().notification(addon.getAddonInfo("name"), addon.getLocalizedString(30350))
                 self.exit()
@@ -79,7 +90,7 @@ class PlatformWindow(xbmcgui.WindowXML):
             self.thread.start()
 
     def scan(self):
-        """列出有 ROM 的平台目录，按游戏数量从多到少排列"""
+        """列出有 ROM 的平台目录，按游戏数量从多到少排列；用户取消扫描时返回 None"""
         lang = ui_language()
         default_logo = os.path.join(addon.getAddonInfo("path"), "resources", "logos", "default.png")
         platforms = []
@@ -88,27 +99,45 @@ class PlatformWindow(xbmcgui.WindowXML):
         except OSError as e:
             log(f"Error reading directory {self.rom_dir}: {e}", xbmc.LOGWARNING)
             return []
-        for name in names:
-            path = os.path.join(self.rom_dir, name)
-            if not os.path.isdir(path) or is_skipped_folder(name) or not has_rom(path):
-                continue
-            files = os.listdir(path)
-            tracks = disc_track_files(path, files)
-            count = sum(1 for f in files if is_rom_file(f) and f.lower() not in tracks)
-            info = ROM_DIR_INFO.get(name.lower(), {})
-            logo = os.path.join(addon.getAddonInfo("path"), "resources", "logos", f"{name.lower()}.png")
-            category = platform_category(name)
-            platforms.append({
-                "path": path,
-                "name": info.get("full_name", name),
-                "count": count,
-                "category": category,
-                "plot": info.get("description_zh", "") if lang == "zh" else info.get("description_en", ""),
-                "logo": logo if os.path.exists(logo) else default_logo,
-            })
+        # U 盘上扫描可能要几十秒，显示进度，避免界面一直空着
+        progress = xbmcgui.DialogProgress()
+        progress.create(addon.getAddonInfo("name"), addon.getLocalizedString(30353))
+        try:
+            for i, name in enumerate(names):
+                if progress.iscanceled():
+                    log("Platform scan cancelled")
+                    return None
+                progress.update(i * 100 // len(names), f"{addon.getLocalizedString(30353)}[CR]{name}")
+                platform = self.scan_platform(name, lang, default_logo)
+                if platform:
+                    platforms.append(platform)
+        finally:
+            progress.close()
         platforms.sort(key=lambda p: (-p["count"], p["name"].lower()))
         log(f"Found {len(platforms)} platforms in {self.rom_dir}")
         return platforms
+
+    def scan_platform(self, name, lang, default_logo):
+        path = os.path.join(self.rom_dir, name)
+        try:
+            if not os.path.isdir(path) or is_skipped_folder(name) or not has_rom(path):
+                return None
+            files = os.listdir(path)
+        except OSError as e:
+            log(f"Error reading directory {path}: {e}", xbmc.LOGWARNING)
+            return None
+        tracks = disc_track_files(path, files)
+        count = sum(1 for f in files if is_rom_file(f) and f.lower() not in tracks)
+        info = ROM_DIR_INFO.get(name.lower(), {})
+        logo = os.path.join(addon.getAddonInfo("path"), "resources", "logos", f"{name.lower()}.png")
+        return {
+            "path": path,
+            "name": info.get("full_name", name),
+            "count": count,
+            "category": platform_category(name),
+            "plot": info.get("description_zh", "") if lang == "zh" else info.get("description_en", ""),
+            "logo": logo if os.path.exists(logo) else default_logo,
+        }
 
     def fill_tabs(self):
         items = []
@@ -146,19 +175,7 @@ class PlatformWindow(xbmcgui.WindowXML):
         images, videos = media
         li.setArt({"fanart": pick_screenshot(images)})
         li.setProperty("video", "true" if videos else "")
-
-    def load_media(self, li):
-        """第一次停在某个平台上时读取它的截图和视频目录，U 盘上较慢，所以不在扫描时做"""
-        path = li.getProperty("path")
-        media = self.media.get(path)
-        if media is None:
-            images_dir = os.path.join(path, "images")
-            # 有的 gamelist 把预览视频也放在 images 目录里（xxx-video.mp4）
-            media = (list_media(images_dir, IMAGE_EXTS),
-                     list_media(os.path.join(path, "videos"), VIDEO_EXTS) or list_media(images_dir, VIDEO_EXTS))
-            self.media[path] = media
-            self.apply_media(li, media)
-        return media
+        li.setProperty("media", "true")
 
     def is_preview_playing(self):
         player = xbmc.Player()
@@ -211,21 +228,38 @@ class PlatformWindow(xbmcgui.WindowXML):
                     focused_since = now
                     self.stop_preview()
                     continue
-                _, videos = self.load_media(li)
-                if not videos or now - focused_since < PREVIEW_DELAY:
+                media = self.media.get(path)
+                if media is not None:
+                    if not li.getProperty("media"):
+                        self.apply_media(li, media)
+                    self.play_preview(media[1], now, focused_since)
                     continue
-                if self.preview:
-                    # 一段视频播完后换一个随机游戏的视频接着播
-                    if self.is_preview_playing() or now - self.preview_started < 3:
-                        continue
-                    self.preview = None
-                # 用户自己在播放其它媒体时不打断
-                if xbmc.Player().isPlaying():
-                    continue
-                self.preview = random.choice(videos)
-                self.preview_started = now
-                log(f"Platform preview: {self.preview}")
-                xbmc.Player().play(self.preview, windowed=True)
+            # 读目录放在锁外面：U 盘上可能要好几秒，拿着锁会让确认键、返回键一直等着
+            media = read_media(path)
+            with self.lock:
+                self.media[path] = media
+                if self.closing:
+                    break
+                li = self.shelf.getSelectedItem()
+                if li and li.getProperty("path") == path:
+                    self.apply_media(li, media)
+
+    def play_preview(self, videos, now, focused_since):
+        """调用方持有 self.lock"""
+        if not videos or now - focused_since < PREVIEW_DELAY:
+            return
+        if self.preview:
+            # 一段视频播完后换一个随机游戏的视频接着播
+            if self.is_preview_playing() or now - self.preview_started < 3:
+                return
+            self.preview = None
+        # 用户自己在播放其它媒体时不打断
+        if xbmc.Player().isPlaying():
+            return
+        self.preview = random.choice(videos)
+        self.preview_started = now
+        log(f"Platform preview: {self.preview}")
+        xbmc.Player().play(self.preview, windowed=True)
 
     def open_platform(self, li):
         with self.lock:

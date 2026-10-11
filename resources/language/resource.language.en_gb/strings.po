@@ -217,3 +217,7 @@ msgstr "Needs CD"
 msgctxt "#30352"
 msgid "This CPS3 ROM set needs the game CD image (CHD) and stops at \"NO CD-ROM DRIVE\" without it. Put the CHD in a folder named after the ROM, or use the NO-CD version (such as sfiii3n)."
 msgstr "This CPS3 ROM set needs the game CD image (CHD) and stops at \"NO CD-ROM DRIVE\" without it. Put the CHD in a folder named after the ROM, or use the NO-CD version (such as sfiii3n)."
+
+msgctxt "#30353"
+msgid "Scanning game platforms..."
+msgstr "Scanning game platforms..."
