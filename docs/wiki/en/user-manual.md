@@ -9,10 +9,12 @@ The screenshots in this manual were taken on Kodi 21 for Windows with the defaul
 - [Add-on settings](#add-on-settings)
 - [Kodi default list](#kodi-default-list)
 - [Game details](#game-details)
+- [Platform screen](#platform-screen)
 - [Custom browse layouts](#custom-browse-layouts)
 - [Adding trailers](#adding-trailers)
 - [Games without artwork](#games-without-artwork)
 - [Launching games and emulators](#launching-games-and-emulators)
+- [CPS3 games that need a CD](#cps3-games-that-need-a-cd)
 - [FAQ](#faq)
 
 ## Before you start
@@ -30,7 +32,7 @@ From the Kodi home screen, open **Add-ons → Video add-ons → Game Visuals**. 
 
 - **Add a folder:** select **Add games...** and choose a ROM folder in the file browser. You can add as many folders as you like.
 - **Remove a folder:** open the context menu on the folder (`C` on a keyboard, Menu on a remote) and select **Remove**.
-- **Folder structure:** you can add a single platform's ROM folder, such as `E:\games\fc\roms`, or a root folder that contains one sub-folder per platform, such as the ES-DE `ROMs` folder. Sub-folders named after a platform (`nes`, `snes`, `megadrive`, ...) are shown with the platform's full name and logo.
+- **Folder structure:** you can add a single platform's ROM folder, such as `E:\games\fc\roms`, or a root folder that contains one sub-folder per platform, such as the ES-DE `ROMs` folder. Sub-folders named after a platform (`nes`, `snes`, `megadrive`, ...) are shown with the platform's full name and logo. With a custom browse layout, opening a root folder shows the [Platform screen](#platform-screen).
 
 ## Add-on settings
 
@@ -41,7 +43,12 @@ On Kodi's **Add-ons** screen, select Game Visuals, open the context menu and cho
 | Setting | Description |
 |---|---|
 | Browse layout | The screen used when you open a game folder: **Kodi default list**, **A: Classic two-column**, **B: Immersive hero**, **C: Poster wall** or **D: Retro TV**. See below. The default is Kodi default list. |
-| Skip media folders | Hides artwork folders such as `images`, `videos` and `media` from the game list. Keep this on. |
+| Skip media folders | Hides these folders from the lists: artwork and BIOS folders such as `images`, `videos`, `media` and `bios`; PC port folders such as `ports` and `ports3`; hidden folders whose names start with `.`; and folders that contain no ROMs (for example an `fbneo` folder holding only emulator saves). Keep this on. |
+
+Whether or not **Skip media folders** is on, these files are never listed as games:
+
+- BIOS files kept next to the games, such as `neogeo.zip`, `pgm.zip`, `stvbios.zip` and the 3DO `panafz1.bin`.
+- Disc track files (`.bin` and so on) referenced by a `.cue` / `.gdi`; each game is listed once, by its `.cue` / `.gdi`.
 
 ## Kodi default list
 
@@ -74,6 +81,28 @@ The details screen shows everything about one game:
 For games with a trailer, playback starts as soon as the screen opens:
 
 ![Game details with a trailer playing](images/user-manual/detail-trailer.jpg)
+
+## Platform screen
+
+When **Browse layout** is set to one of A–D, opening a root folder that contains one sub-folder per platform shows the platform screen:
+
+![Platform screen](images/user-manual/platform-shelf.jpg)
+
+- **Top half:** the selected platform's logo, name, game count, category and description. Platforms with preview videos get a **Preview video** tag.
+- **Preview area:** first shows a screenshot of a random game on the platform. After the platform stays selected for about 1.5 seconds, a random game's preview video plays, followed by another when it ends.
+- **Categories:** press ↑ to move to the category bar, then use ← → to switch between All / Arcade / Console / Handheld / Computer. The platform cards below are filtered right away. Categories without platforms are not shown.
+- **Platform cards:** sorted by number of games, most first.
+
+| Key (keyboard / remote) | Action |
+|---|---|
+| ← → | Switch platform; on the category bar, switch category |
+| ↑ ↓ | Move between the platform cards and the category bar |
+| `Enter` / OK | Open the platform in the selected browse layout |
+| `Backspace`, `Esc` / Back | Close the platform screen. Pressing Back in a game list returns here with the same platform selected |
+
+- Platform names and logos are detected the same way as in the Kodi default list: name the folders after the EmulationStation platform folders.
+- Only folders that contain ROMs are shown as platforms; artwork, BIOS, PC port and hidden folders are skipped.
+- If the folder you added contains ROM files directly (for example `E:\games\fc\roms`), the platform screen is skipped and the game list opens directly.
 
 ## Custom browse layouts
 
@@ -116,12 +145,6 @@ Trailers and screenshots play on the screen of a retro TV with scanlines, and th
 
 ![Layout D](images/user-manual/layout-d.jpg)
 
-### Browsing multi-platform folders
-
-If you added a root folder that contains one sub-folder per platform, the platform folders are listed in Kodi's own view with their logos and descriptions. The layout opens only when you enter a folder that contains games; press Back there to return to the platform list.
-
-![Platform folders](images/user-manual/folder.jpg)
-
 ## Adding trailers
 
 A trailer is set with the `<video>` tag of each `<game>` in `gamelist.xml`. Paths are relative to the folder containing `gamelist.xml`. These are all the tags the add-on reads:
@@ -146,6 +169,7 @@ A trailer is set with the `<video>` tag of each `<game>` in `gamelist.xml`. Path
 - Any video format Kodi can play works; MP4 (H.264) is recommended.
 - Put trailers in a `videos` folder inside the ROM folder. With **Skip media folders** on, that folder does not appear in the game list.
 - If the file referenced by `<video>` does not exist, the game is treated as having no trailer.
+- Preview videos on the [Platform screen](#platform-screen) are not read from `gamelist.xml`. A random video is picked from the platform folder: from the `videos` folder first, otherwise from the `images` folder (some scrapers put `xxx-video.mp4` files there).
 
 ## Games without artwork
 
@@ -158,6 +182,29 @@ In the layout C screenshot above, Super Mario Unlimited and 加纳战机 in the 
 The first time you launch a game for a platform, Kodi shows a dialog for choosing an emulator, listing every core that supports the file type. Cores that are already installed are marked and can be used right away; choosing one that is not installed makes Kodi download and install it first.
 
 For FC / NES games, **Nestopia** or **FCEUmm** is recommended.
+
+## CPS3 games that need a CD
+
+On CPS3 arcade hardware the game program is on a CD. Regular CPS3 ROM sets (such as `warzard`, `redearth`, `sfiii`, `sfiii2`, `sfiii3`, `jojo` and `jojoba`) only contain the board BIOS and keys. Without the game's CD image (CHD), the game stops at a "NO CD-ROM DRIVE" screen whichever emulator core you choose.
+
+The add-on adds **[Needs CD]** to the titles of these games and explains why at the start of the description:
+
+![CPS3 games that need a CD](images/user-manual/needs-cd.jpg)
+
+There are two ways to play them:
+
+1. **Use the NO-CD version.** ROM sets whose names end in `n` or `ne` (such as `sfiii3n`, `jojobane` and `redeartn`) contain the game data and do not need a CD. Run them with the FinalBurn Neo core. The add-on does not mark them.
+2. **Add the CD image.** Put the CHD file in a folder named after the ROM set. A clone (regional or revised version) can also use the CHD in its parent set's folder. For example, the Japanese `sfiii2j` is a clone of `sfiii2`:
+
+   ```
+   G:\roms\cps3\
+   ├── sfiii2.zip
+   ├── sfiii2j.zip        ← looks in sfiii2j\ first, then in the parent set's sfiii2\
+   └── sfiii2\
+       └── cap-3ga000.chd
+   ```
+
+   Reopen the list and the mark disappears. The add-on only checks that the folder contains a `.chd` file, not that it is the right version; with the wrong version the emulator still cannot start the game.
 
 ## FAQ
 
@@ -178,6 +225,14 @@ The platform is detected from the folder name. Name your ROM folders after the E
 - Check that the `<video>` path is correct and the file exists.
 - Keep the game selected for more than a second.
 - Check that the video plays in Kodi on its own.
+
+**"invalid ROM" is shown after selecting a game**
+
+The zip file is usually damaged, for example a CRC check fails while extracting it. `kodi.log` contains an `Extract ROM failed` warning naming the file. Download the ROM again.
+
+**Some files or folders are missing from the list**
+
+BIOS files, disc track files, PC port folders, hidden folders and folders without ROMs are skipped automatically; see [Add-on settings](#add-on-settings). Turn off **Skip media folders** to show those folders.
 
 **Some text is blank after updating the add-on**
 

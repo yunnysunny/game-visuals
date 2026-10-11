@@ -6,8 +6,8 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from .utils import card_color, get_game_info, log, play_rom
-from .constants import ROM_EXTENSIONS, MEDIA_FOLDERS, ROM_DIR_INFO
+from .utils import card_color, disc_track_files, get_game_info, has_rom, is_skipped_folder, log, mark_needs_cd, needs_cd_image, play_rom, ui_language
+from .constants import ROM_DIR_INFO, is_rom_file
 from .detail_window import format_rating, show_game_detail
 
 addon = xbmcaddon.Addon()
@@ -68,12 +68,15 @@ class GameBrowserWindow(xbmcgui.WindowXML):
         platform = ROM_DIR_INFO.get(rom_dirname, {}).get("full_name", "")
 
         folders, games = [], []
-        for name in os.listdir(directory):
+        names = os.listdir(directory)
+        tracks = disc_track_files(directory, names)
+        for name in names:
             full_path = os.path.join(directory, name)
             if os.path.isdir(full_path):
                 if not os.listdir(full_path):
                     continue
-                if skip_media_folders and name.lower() in MEDIA_FOLDERS:
+                # 跳过媒体、移植游戏、隐藏目录，以及只有存档/配置、没有 ROM 的目录
+                if skip_media_folders and (is_skipped_folder(name) or not has_rom(full_path)):
                     continue
                 info = ROM_DIR_INFO.get(name.lower(), {"full_name": name})
                 logo = os.path.join(addon.getAddonInfo("path"), "resources", "logos", f"{name.lower()}.png")
@@ -84,16 +87,20 @@ class GameBrowserWindow(xbmcgui.WindowXML):
                 li.setProperty("isfolder", "true")
                 li.setProperty("path", full_path)
                 li.setProperty("title", info["full_name"])
-                lang = xbmc.getLanguage(xbmc.ISO_639_1)
+                lang = ui_language()
                 li.setProperty("plot", info.get("description_zh", "") if lang == "zh" else info.get("description_en", ""))
                 folders.append(li)
                 continue
-            if not name.lower().endswith(ROM_EXTENSIONS):
+            # cue/gdi 引用的轨道文件随镜像描述文件一起显示
+            if not is_rom_file(name) or name.lower() in tracks:
                 continue
             meta = game_info.get(name, {})
             title = meta.get("title") or os.path.splitext(name)[0]
             thumb = meta.get("thumb") or meta.get("fanart") or default_logo
-            li = xbmcgui.ListItem(label=title)
+            label, plot = title, meta.get("plot", "")
+            if needs_cd_image(directory, name):
+                label, plot = mark_needs_cd(title, plot)
+            li = xbmcgui.ListItem(label=label)
             li.setArt({
                 "thumb": thumb,
                 "poster": thumb,
@@ -105,7 +112,7 @@ class GameBrowserWindow(xbmcgui.WindowXML):
             li.setProperty("file", name)
             li.setProperty("title", title)
             li.setProperty("platform", platform)
-            li.setProperty("plot", meta.get("plot", ""))
+            li.setProperty("plot", plot)
             li.setProperty("year", str(meta["year"]) if meta.get("year") else "")
             li.setProperty("genre", meta.get("genre", ""))
             li.setProperty("developer", meta.get("developer", ""))
