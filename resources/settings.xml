@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<settings>
-    <category label="30304">
-        <!-- <setting id="rom_dirs"
-                 type="folder"
-                 label="30303"
-                 default=""
-                 visible="true"
-                 /> -->
-        <setting id="browse_layout"
-                 type="enum"
-                 label="30330"
-                 lvalues="30331|30332|30333|30334|30335"
-                 default="0"
-                 visible="true"
-                 />
-        <setting id="skip_media_folders"
-                 type="bool"
-                 label="30306"
-                 default="true"
-                 visible="true"
-                 />
-    </category>
+<settings version="1">
+    <section id="plugin.video.game-visuals">
+        <category id="general" label="30304">
+            <group id="1">
+                <!-- ROM 目录列表，由插件首页的添加/删除菜单维护，不在设置界面显示 -->
+                <setting id="rom_dirs" type="string" label="30303">
+                    <level>4</level>
+                    <default></default>
+                    <constraints>
+                        <allowempty>true</allowempty>
+                    </constraints>
+                    <visible>false</visible>
+                    <control type="edit" format="string" />
+                </setting>
+                <!-- 存储的值对应 browser_window.LAYOUT_XML：0 为 Kodi 默认列表，1–4 为布局 A–D；
+                     显示顺序与存储的值无关，调整顺序不影响已保存的设置 -->
+                <setting id="browse_layout" type="integer" label="30330">
+                    <level>0</level>
+                    <default>1</default>
+                    <constraints>
+                        <options>
+                            <option label="30332">1</option>
+                            <option label="30333">2</option>
+                            <option label="30334">3</option>
+                            <option label="30335">4</option>
+                            <option label="30331">0</option>
+                        </options>
+                    </constraints>
+                    <control type="spinner" format="string" />
+                </setting>
+                <setting id="skip_media_folders" type="boolean" label="30306">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle" />
+                </setting>
+            </group>
+        </category>
+    </section>
 </settings>

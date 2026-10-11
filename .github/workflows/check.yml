@@ -1,0 +1,45 @@
+name: Check Kodi Addon
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:   # 手动触发
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install tools
+        run: pip install kodi-addon-checker pyflakes
+
+      - name: Pyflakes
+        run: pyflakes default.py script.py resources/lib
+
+      # 和 build.yml 打包时排除同样的文件，检查的是用户实际安装的内容
+      - name: Package
+        run: |
+          addon_id=$(python3 -c "import xml.etree.ElementTree as ET; print(ET.parse('addon.xml').getroot().attrib['id'])")
+          mkdir -p "build/$addon_id"
+          rsync -a --exclude='.git/' --exclude='docs/' \
+            --exclude='.vscode/' --exclude='.github/' --exclude='.gitignore' --exclude='dist/' \
+            --exclude='build/' \
+            ./ "build/$addon_id"
+          echo "ADDON_ID=$addon_id" >> "$GITHUB_ENV"
+
+      - name: Kodi addon checker
+        working-directory: build
+        run: kodi-addon-checker --branch omega "$ADDON_ID"

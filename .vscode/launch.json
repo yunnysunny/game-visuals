@@ -6,13 +6,13 @@
       "type": "python",
       "request": "attach",
       "connect": {
-        "host": "127.0.0.1",   // 如果 Kodi 在别的设备，改成它的 IP
+        "host": "127.0.0.1",
         "port": 5678
       },
       "pathMappings": [
         {
-          "localRoot": "${workspaceFolder}",       // 本机插件源码目录
-          "remoteRoot": "/storage/.kodi/addons/plugin.video.example"  // Kodi 里的插件路径
+          "localRoot": "${workspaceFolder}",
+          "remoteRoot": "/storage/.kodi/addons/plugin.video.game-visuals"
         }
       ]
     }
