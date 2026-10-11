@@ -4,7 +4,7 @@
        version="0.8.0"
        provider-name="whyun">
     <requires>
-        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="xbmc.python" version="3.0.1"/>
     </requires>
 
     <!-- 作为视频插件入口 -->
@@ -22,7 +22,7 @@
         <platform>all</platform>
         <assets>
             <icon>icon.png</icon>
-            <fanart>fanart.png</fanart>
+            <fanart>fanart.jpg</fanart>
             <screenshot>resources/screenshots/platforms.png</screenshot>
             <screenshot>resources/screenshots/view_modes.png</screenshot>
             <screenshot>resources/screenshots/select_cores.png</screenshot>
