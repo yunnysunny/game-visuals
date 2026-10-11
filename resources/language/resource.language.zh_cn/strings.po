@@ -169,3 +169,55 @@ msgstr "确认：开始游戏    信息 / 菜单键：详情    返回：上一�
 msgctxt "#30340"
 msgid "No screenshot"
 msgstr "暂无截图"
+
+msgctxt "#30341"
+msgid "{0} platforms · {1} games"
+msgstr "{0} 个平台 · {1} 款游戏"
+
+msgctxt "#30342"
+msgid "All"
+msgstr "全部"
+
+msgctxt "#30343"
+msgid "Arcade"
+msgstr "街机"
+
+msgctxt "#30344"
+msgid "Console"
+msgstr "家用机"
+
+msgctxt "#30345"
+msgid "Handheld"
+msgstr "掌机"
+
+msgctxt "#30346"
+msgid "Computer"
+msgstr "电脑"
+
+msgctxt "#30347"
+msgid "Preview video"
+msgstr "有预览视频"
+
+msgctxt "#30348"
+msgid "OK: open platform    ← →: switch    ↑: categories"
+msgstr "确认：进入平台    ← →：切换    ↑：分类"
+
+msgctxt "#30349"
+msgid "Screenshots and preview videos of this platform's games"
+msgstr "平台内随机游戏的截图 / 预览视频"
+
+msgctxt "#30350"
+msgid "No game platforms found in this folder"
+msgstr "这个目录下没有找到游戏平台"
+
+msgctxt "#30351"
+msgid "Needs CD"
+msgstr "需要 CD"
+
+msgctxt "#30352"
+msgid "This CPS3 ROM set needs the game CD image (CHD) and stops at \"NO CD-ROM DRIVE\" without it. Put the CHD in a folder named after the ROM, or use the NO-CD version (such as sfiii3n)."
+msgstr "这个 CPS3 ROM 包需要游戏 CD 镜像（CHD），缺少时会停在\"NO CD-ROM DRIVE\"。请把 CHD 放进与 ROM 同名的目录，或改用 NO-CD 版（如 sfiii3n）。"
+
+msgctxt "#30353"
+msgid "Scanning game platforms..."
+msgstr "正在扫描游戏平台……"

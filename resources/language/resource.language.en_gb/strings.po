@@ -169,3 +169,55 @@ msgstr "OK: play    Info / Menu: details    Back: up a level"
 msgctxt "#30340"
 msgid "No screenshot"
 msgstr "No screenshot"
+
+msgctxt "#30341"
+msgid "{0} platforms · {1} games"
+msgstr "{0} platforms · {1} games"
+
+msgctxt "#30342"
+msgid "All"
+msgstr "All"
+
+msgctxt "#30343"
+msgid "Arcade"
+msgstr "Arcade"
+
+msgctxt "#30344"
+msgid "Console"
+msgstr "Console"
+
+msgctxt "#30345"
+msgid "Handheld"
+msgstr "Handheld"
+
+msgctxt "#30346"
+msgid "Computer"
+msgstr "Computer"
+
+msgctxt "#30347"
+msgid "Preview video"
+msgstr "Preview video"
+
+msgctxt "#30348"
+msgid "OK: open platform    ← →: switch    ↑: categories"
+msgstr "OK: open platform    ← →: switch    ↑: categories"
+
+msgctxt "#30349"
+msgid "Screenshots and preview videos of this platform's games"
+msgstr "Screenshots and preview videos of this platform's games"
+
+msgctxt "#30350"
+msgid "No game platforms found in this folder"
+msgstr "No game platforms found in this folder"
+
+msgctxt "#30351"
+msgid "Needs CD"
+msgstr "Needs CD"
+
+msgctxt "#30352"
+msgid "This CPS3 ROM set needs the game CD image (CHD) and stops at \"NO CD-ROM DRIVE\" without it. Put the CHD in a folder named after the ROM, or use the NO-CD version (such as sfiii3n)."
+msgstr "This CPS3 ROM set needs the game CD image (CHD) and stops at \"NO CD-ROM DRIVE\" without it. Put the CHD in a folder named after the ROM, or use the NO-CD version (such as sfiii3n)."
+
+msgctxt "#30353"
+msgid "Scanning game platforms..."
+msgstr "Scanning game platforms..."

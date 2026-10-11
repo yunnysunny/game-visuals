@@ -1,8 +1,8 @@
 import os
 import urllib.parse
 
-from .utils import get_game_info, log, play_rom as play_rom_file
-from .constants import ROM_EXTENSIONS, MEDIA_FOLDERS, ROM_DIR_INFO
+from .utils import disc_track_files, get_game_info, has_rom, is_skipped_folder, log, mark_needs_cd, needs_cd_image, play_rom as play_rom_file, ui_language
+from .constants import ROM_DIR_INFO, is_rom_file
 import xbmc
 import xbmcgui
 import xbmcplugin
@@ -67,14 +67,25 @@ class GameDirectoryPlugin:
         selected_dir = self.args.get("dir", [None])[0]
         if selected_dir:
             self.run_browser(selected_dir, self.addon.getSettingInt("browse_layout") or 1)
-    def run_browser(self, directory, layout):
+    def platforms_action(self):
+        """ROM 根目录列表项触发：打开平台展示窗口"""
+        selected_dir = self.args.get("dir", [None])[0]
+        if not selected_dir:
+            return
+        if not os.path.exists(selected_dir):
+            xbmcgui.Dialog().ok(self.addon.getLocalizedString(30300), self.addon.getLocalizedString(30310))
+            return
+        # 根目录里直接放着 ROM 时没有平台可展示，直接打开游戏列表
+        action = "browse" if self.has_rom_file(selected_dir) else "platforms"
+        self.run_browser(selected_dir, self.addon.getSettingInt("browse_layout") or 1, action=action)
+    def run_browser(self, directory, layout, action="browse"):
         addon_id = self.addon.getAddonInfo("id")
-        browse_args = urllib.parse.urlencode({"action": "browse", "dir": directory, "layout": layout})
+        browse_args = urllib.parse.urlencode({"action": action, "dir": directory, "layout": layout})
         xbmc.executebuiltin(f'RunScript({addon_id}, {browse_args})')
     def has_rom_file(self, directory):
         try:
             return any(
-                name.lower().endswith(ROM_EXTENSIONS) and os.path.isfile(os.path.join(directory, name))
+                is_rom_file(name) and os.path.isfile(os.path.join(directory, name))
                 for name in os.listdir(directory)
             )
         except OSError as e:
@@ -128,6 +139,9 @@ class GameDirectoryPlugin:
         if action == 'browse':
             self.browse_action()
             return
+        if action == 'platforms':
+            self.platforms_action()
+            return
         if action == 'add':
             self.add_action()
             return
@@ -148,6 +162,7 @@ class GameDirectoryPlugin:
             # xbmcplugin.endOfDirectory(self.handle, succeeded=False)
             # return
 
+        layout = self.addon.getSettingInt("browse_layout")
         for d in rom_dirs:
             li = xbmcgui.ListItem(label=d)
             # 添加右键菜单：Remove
@@ -155,8 +170,13 @@ class GameDirectoryPlugin:
             li.addContextMenuItems([
                 (removeTxt, f"RunPlugin({self.base_url}?dir={urllib.parse.quote_plus(d)}&action=remove)")
             ])
-            url = f"{self.base_url}?dir={urllib.parse.quote_plus(d)}&action=open"
-            xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=True)
+            if layout:
+                # 自定义布局下用非文件夹项直接打开平台展示窗口，原因见 list_games_in_directory
+                url = f"{self.base_url}?dir={urllib.parse.quote_plus(d)}&action=platforms"
+                xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=False)
+            else:
+                url = f"{self.base_url}?dir={urllib.parse.quote_plus(d)}&action=open"
+                xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=True)
         
         # 添加新目录
         addTxt = self.addon.getLocalizedString(30307)
@@ -177,17 +197,20 @@ class GameDirectoryPlugin:
         default_logo = f"{self.addon_path}/resources/logos/default.png"
         default_fanart = self.addon.getAddonInfo('fanart')
 
-        lang = xbmc.getLanguage(xbmc.ISO_639_1)
+        lang = ui_language()
         layout = self.addon.getSettingInt("browse_layout")
         hasRomFile = False
-        for file in os.listdir(directory):
+        names = os.listdir(directory)
+        tracks = disc_track_files(directory, names)
+        for file in names:
             full_path = os.path.join(directory, file)
             # log(f"Found file: {file}", level=xbmc.LOGINFO)
             if os.path.isdir(full_path):
                 if len(os.listdir(full_path)) == 0:
                     continue
-                if skip_media_folders and file.lower() in MEDIA_FOLDERS:
-                    log(f"Skipping media folder: {file}", level=xbmc.LOGINFO)
+                # 跳过媒体、移植游戏、隐藏目录，以及只有存档/配置、没有 ROM 的目录
+                if skip_media_folders and (is_skipped_folder(file) or not has_rom(full_path)):
+                    log(f"Skipping non-game folder: {file}", level=xbmc.LOGINFO)
                     continue
                 info = ROM_DIR_INFO.get(file.lower(), {
                     "full_name": file,
@@ -226,7 +249,8 @@ class GameDirectoryPlugin:
                     xbmcplugin.addDirectoryItem(self.handle, url, li, isFolder=True)
                 continue
             if os.path.isfile(full_path):
-                if not file.lower().endswith(ROM_EXTENSIONS):
+                # cue/gdi 引用的轨道文件随镜像描述文件一起显示
+                if not is_rom_file(file) or file.lower() in tracks:
                     continue
                 hasRomFile = True
                 meta = game_info.get(file, {
@@ -240,11 +264,14 @@ class GameDirectoryPlugin:
                     "rating": None,
                 })
                 log(f"Found meta file: {meta}", level=xbmc.LOGINFO)
-                li = xbmcgui.ListItem(label=meta["title"])
+                label, plot = meta["title"], meta["plot"]
+                if needs_cd_image(directory, file):
+                    label, plot = mark_needs_cd(label, plot)
+                li = xbmcgui.ListItem(label=label)
                 # 获取 Video InfoTag 对象
                 info_tag = li.getVideoInfoTag()
-                info_tag.setTitle(meta["title"])
-                info_tag.setPlot(meta["plot"])
+                info_tag.setTitle(label)
+                info_tag.setPlot(plot)
                 if meta["year"]:
                     info_tag.setYear(meta['year'])
                 if meta['genre']:

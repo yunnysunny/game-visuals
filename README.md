@@ -4,7 +4,7 @@
 
 A game visualization add-on for Kodi.
 
-![](resources/screenshots/list.png)
+![](resources/screenshots/platforms.png)
 
 ## Motivation
 
@@ -14,7 +14,9 @@ While using Kodi as a home entertainment center, I found that it lacked an add-o
 
 * Supports direct use of RecalBox’s **gamelist.xml** file without extra configuration, see [here](docs/wiki/en/gamelist-usage.md) for more details.
 * Provides a game details screen and four custom browse layouts with automatic trailer playback, see the [User Manual](docs/wiki/en/user-manual.md).
-* Automatically detects games in ROM folders and displays the corresponding visual resources.
+* A platform screen for multi-platform ROM folders: platform logos, game counts, category filters and random preview videos.
+* Automatically detects games in ROM folders and displays the corresponding visual resources, skipping BIOS files, disc track files and non-game folders.
+* Marks CPS3 games that cannot run without their CD image.
 * Thanks to Kodi’s view-switching functionality, it offers multiple view modes so users can choose their preferred browsing style. Click the **Options** button in the bottom-left corner and select a **Viewtype** mode from the popup menu.
 
 ![](resources/screenshots/view_modes.png)
@@ -28,6 +30,8 @@ While using Kodi as a home entertainment center, I found that it lacked an add-o
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details.
+
+The platform logos `cave.png`, `pgm.png`, `pgm2.png` and `psikyo.png` in `resources/logos` are converted from the [Crystal](https://github.com/dm2912/Crystal) EmulationStation theme by dm2912, and are used under its attribution / non-commercial terms. They are not covered by the MIT License.
 
 ## Support
 If you find this add-on useful and would like to support its development, please consider making a donation. Your support is greatly appreciated!

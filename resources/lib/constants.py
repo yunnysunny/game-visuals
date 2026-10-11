@@ -39,7 +39,9 @@ ROM_EXTENSIONS = (
     ".rvz", ".wia",  # GameCube/Wii (Dolphin compressor)
     ".chd",  # Compressed CD images (multiple platforms)
     ".m3u",  # Multi-disc playlists
-    ".zip"  # Arcade ROM sets (MAME, FBNeo, etc.)
+    ".zip",  # Arcade ROM sets (MAME, FBNeo, etc.)
+    ".7z",  # 7-Zip 压缩的 ROM（PGM 等街机平台常用）
+    ".pak",  # OpenBOR
 )
 
 ROM_DIR_INFO = {
@@ -548,12 +550,60 @@ ROM_DIR_INFO = {
         "description_en": "The Pokemon Mini was Nintendo's 2001 mini-handheld designed exclusively for Pokemon-themed games; very limited library."
     },
     "pgm2": {
-        "full_name": "PolyGame Master",
+        "full_name": "PolyGame Master 2",
         "platform": "pgm2",
         "core/emu": ["multiemu***"],
         "extensions": [".zip"],
         "description_zh": "PolyGame Master是亚洲地区流行的街机主板，运行大量中文和东南亚格斗游戏。",
         "description_en": "PolyGame Master is a popular arcade board in Asia, running many Chinese and Southeast Asian fighting games."
+    },
+    "pgm": {
+        "full_name": "PolyGame Master",
+        "platform": "pgm",
+        "core/emu": ["fbneo"],
+        "extensions": [".zip", ".7z"],
+        "description_zh": "IGS 1997 年推出的街机基板，代表作有《三国战纪》《西游释厄传》《傲剑狂刀》。",
+        "description_en": "IGS's arcade board from 1997, home to Knights of Valour, Oriental Legend and Martial Masters."
+    },
+    "cps1": {
+        "full_name": "Capcom Play System",
+        "platform": "cps1",
+        "core/emu": ["fbneo", "mame"],
+        "extensions": [".zip", ".7z"],
+        "description_zh": "卡普空 1988 年推出的街机基板，《街头霸王 II》《快打旋风》《恐龙快打》都运行在这块基板上。",
+        "description_en": "Capcom's arcade board from 1988, running Street Fighter II, Final Fight and Cadillacs and Dinosaurs."
+    },
+    "cps2": {
+        "full_name": "Capcom Play System II",
+        "platform": "cps2",
+        "core/emu": ["fbneo", "mame"],
+        "extensions": [".zip", ".7z"],
+        "description_zh": "卡普空 1993 年推出的街机基板，带加密保护，代表作有《超级街霸 II》及大量格斗与清版动作游戏。",
+        "description_en": "Capcom's encrypted arcade board from 1993, known for Super Street Fighter II and many fighting and beat 'em up games."
+    },
+    "cps3": {
+        "full_name": "Capcom Play System III",
+        "platform": "cps3",
+        "core/emu": ["fbneo", "mame"],
+        "extensions": [".zip", ".7z"],
+        "description_zh": "卡普空 1996 年推出的街机基板，代表作有《街头霸王 III》系列和《JoJo 的奇妙冒险》。",
+        "description_en": "Capcom's arcade board from 1996, home to the Street Fighter III series and JoJo's Bizarre Adventure."
+    },
+    "psikyo": {
+        "full_name": "Psikyo",
+        "platform": "psikyo",
+        "core/emu": ["fbneo"],
+        "extensions": [".zip", ".7z"],
+        "description_zh": "日本街机厂商彩京的作品合集，以《打击者 1945》《武装飞鹰》等纵版射击游戏闻名。",
+        "description_en": "Arcade games from the Japanese developer Psikyo, famous for vertical shooters like Strikers 1945 and Gunbird."
+    },
+    "cave": {
+        "full_name": "Cave",
+        "platform": "cave",
+        "core/emu": ["fbneo"],
+        "extensions": [".zip", ".7z"],
+        "description_zh": "日本街机厂商 CAVE 的作品合集，以《怒首领蜂》系列等弹幕射击游戏闻名。",
+        "description_en": "Arcade games from the Japanese developer CAVE, famous for bullet hell shooters like the DonPachi series."
     },
     "scummvm": {
         "full_name": "ScummVM",
@@ -785,11 +835,81 @@ ZIPPED_ROM_DIRNAMES = [
     "snes", "nes", "famicom", "sfc"
 ]
 
+# 与目录名比较时统一用小写
 MEDIA_FOLDERS = [
-    "images", "videos", "bezels", "BGM", "bios", "bios3", "ports_scripts", "savestates", "splash",
+    "images", "videos", "bezels", "bgm", "bios", "bios3", "ports_scripts", "savestates", "splash",
     "downloads", "screenshots", "media"
 ]
 
+# PC 移植游戏目录，里面是游戏程序和数据文件，不是 RetroPlayer 能运行的 ROM
+PORT_FOLDERS = ["ports", "ports3"]
+
+# 开启"跳过媒体文件夹"时不显示的目录
+SKIP_FOLDERS = set(MEDIA_FOLDERS + PORT_FOLDERS)
+
+# 平台展示界面的分类，不在下面几组里的平台归为家用机
+ARCADE_DIRNAMES = {
+    "arcade", "fbneo", "fba", "mame", "mame-libretro", "mame-advmame", "mame-mame4all", "hbmame",
+    "cps", "cps1", "cps2", "cps3", "neogeo", "pgm", "pgm2", "psikyo", "cave", "cave3rd", "capcom",
+    "naomi", "naomi2", "naomigd", "atomiswave", "model2", "model3", "daphne", "openbor",
+}
+HANDHELD_DIRNAMES = {
+    "gb", "gbh", "gbc", "gbch", "gba", "gbah", "nds", "3ds", "psp", "pspminis", "psvita",
+    "gamegear", "gamegearh", "ngp", "ngpc", "wonderswan", "wonderswancolor", "atarilynx",
+    "virtualboy", "pokemini", "supervision", "gameandwatch", "gw",
+}
+COMPUTER_DIRNAMES = {
+    "amiga", "amigacd32", "amstradcpc", "atari800", "atarist", "c64", "c128", "c16", "vic20",
+    "msx", "msx2", "pc", "pc98", "dos", "x68000", "zxspectrum", "zx81", "scummvm", "apple2",
+}
+
+def platform_category(dirname):
+    """平台目录名 → 分类 id：arcade / console / handheld / computer"""
+    name = dirname.lower()
+    if name in ARCADE_DIRNAMES:
+        return "arcade"
+    if name in HANDHELD_DIRNAMES:
+        return "handheld"
+    if name in COMPUTER_DIRNAMES:
+        return "computer"
+    return "console"
+
+# CPS3 的普通 ROM 包只有基板 BIOS 和密钥，游戏数据在 CD 上，缺少 CD 镜像（CHD）时会停在 "NO CD-ROM DRIVE"。
+# 名字以 n / ne 结尾的 NO-CD 版（sfiii3n、jojobane、redeartn 等）不需要 CD，不在此列。
+#
+# 包名 → 父包名（父包本身为 None）。
+# "父包"指 MAME 的 ROM 集父子关系，不是文件系统的上级目录：同一个游戏的不同版本中，
+# 一个是父包（parent），其余地区版、修订版是它的克隆包（clone）。例如 sfiii2 是父包，
+# sfiii2j（日版）、sfiii2h（亚洲版）是克隆包；同一游戏的光盘相同，克隆包可以共用父包的 CHD
+CPS3_CD_SETS = {
+    "redearth": None,
+    "redearthr1": "redearth", "warzard": "redearth", "warzardr1": "redearth",
+    "sfiii": None,
+    "sfiiia": "sfiii", "sfiiih": "sfiii", "sfiiij": "sfiii", "sfiiiu": "sfiii",
+    "sfiii2": None,
+    "sfiii2h": "sfiii2", "sfiii2j": "sfiii2",
+    "sfiii3": None,
+    "sfiii3j": "sfiii3", "sfiii3jr1": "sfiii3", "sfiii3r1": "sfiii3", "sfiii3u": "sfiii3", "sfiii3ur1": "sfiii3",
+    "jojo": None,
+    "jojoa": "jojo", "jojoar1": "jojo", "jojoar2": "jojo", "jojoj": "jojo", "jojojr1": "jojo",
+    "jojojr2": "jojo", "jojor1": "jojo", "jojor2": "jojo", "jojou": "jojo", "jojour1": "jojo", "jojour2": "jojo",
+    "jojoba": None,
+    "jojobaj": "jojoba", "jojobajr1": "jojoba", "jojobar1": "jojoba",
+}
+
+# 常与游戏放在同一目录的 BIOS 文件，后缀和 ROM 相同但不能单独运行
+IGNORED_ROM_FILES = {
+    # 街机
+    "neogeo.zip", "neocdz.zip", "pgm.zip", "stvbios.zip", "naomi.zip", "naomi2.zip", "naomigd.zip",
+    "awbios.zip", "airlbios.zip", "f355bios.zip", "f355dlx.zip", "hod2bios.zip", "segasp.zip",
+    "skns.zip", "decocass.zip", "isgsm.zip", "cpzn1.zip", "cpzn2.zip", "qsound.zip", "nmk004.zip",
+    "ym2608.zip", "cchip.zip", "bubsys.zip", "hng64.zip", "megaplay.zip",
+    # 3DO
+    "panafz1.bin", "panafz1j.bin", "panafz10.bin", "panafz10-norsa.bin", "panafz10e-anvil.bin",
+    "goldstar.bin", "sanyotry.bin", "3do_arcade_saot.bin",
+}
+
 def is_rom_file(filename):
-    """检查文件是否是ROM文件"""
-    return any(filename.lower().endswith(ext) for ext in ROM_EXTENSIONS)
+    """检查文件是否是ROM文件（排除 BIOS 等非游戏文件）"""
+    name = filename.lower()
+    return name.endswith(ROM_EXTENSIONS) and name not in IGNORED_ROM_FILES
