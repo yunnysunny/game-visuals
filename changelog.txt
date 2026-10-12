@@ -1,3 +1,20 @@
+## v0.9.0
+### Add
+1. Add platform screen for multi-platform ROM folders: platform logos, game counts, category filters and random preview videos.
+2. Mark CPS3 games that need a CD image (CHD) with [Needs CD].
+3. Support `.7z` and `.pak` ROMs.
+4. Add cave, pgm, pgm2 and psikyo platform logos and descriptions.
+
+### Change
+1. Default browse layout is now A: Classic two-column; Kodi default list is listed last.
+2. Skip BIOS files, disc track files, PC port folders, hidden folders and folders without ROMs.
+3. Update screenshots to show the custom layouts.
+
+### Fix
+1. Catch corrupt zip files when extracting ROMs.
+2. Descriptions follow the UI language when Kodi returns no ISO code for Simplified Chinese.
+3. Fix kodi-addon-checker errors (icon, fanart and screenshot sizes, xbmc.python version, entry point length).
+
 ## v0.8.0
 ### Add
 1. Add game detail window with trailer playback, opened from the context menu.
