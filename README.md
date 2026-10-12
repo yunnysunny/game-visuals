@@ -17,9 +17,9 @@ While using Kodi as a home entertainment center, I found that it lacked an add-o
 * A platform screen for multi-platform ROM folders: platform logos, game counts, category filters and random preview videos.
 * Automatically detects games in ROM folders and displays the corresponding visual resources, skipping BIOS files, disc track files and non-game folders.
 * Marks CPS3 games that cannot run without their CD image.
-* Thanks to Kodi’s view-switching functionality, it offers multiple view modes so users can choose their preferred browsing style. Click the **Options** button in the bottom-left corner and select a **Viewtype** mode from the popup menu.
+* Choose a browse layout in the add-on settings: four custom layouts (the default is A: Classic two-column), or the Kodi default list, which keeps Kodi's own view types.
 
-![](resources/screenshots/view_modes.png)
+![](docs/wiki/en/images/user-manual/layout-a.jpg)
 
 ## Known Issues
 
